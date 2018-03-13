@@ -9,7 +9,7 @@ using TWPROJECT_MVC.Models;
 using System.Threading;
 using System.Globalization;
 
-// for DB Connection
+// servono per la connessione al database su SQL server
 using System.Data;
 using System.Data.SqlClient;
 
@@ -20,31 +20,32 @@ namespace TWPROJECT_MVC.Controllers
         public SQLConnection db;
         public static Data dbData;
 
-        // permessi (di prova)
-        private bool puoScrivere = false;
+        // permessi (di prova), necessari per specificare cosa può/non può fare l'utente
+        private bool puoScrivere = true;
         private bool puoAggiungere = false;
         private bool puoEliminare = false;
         private bool puoScrivereOnParent = false;
 
+        // PAGINA DI PROVA
         // GET: /Gantt
         public ActionResult Index()
         {
 
             try
             {
-                db = new SQLConnection(); // creo un oggetto SQLConnection
+                db = new SQLConnection(); // creo un oggetto SQLConnection con cui stabilire una connessione al database
 
-                dbData = new Data(); // creo un nuovo oggetto Data
+                dbData = new Data(); // creo un nuovo oggetto Data in cui è specificata la struttura dell'oggetto json, per la pagina Gantt (View/Gantt/Gantt.cshtml)
 
-                // creo e popolo la lista di Task
+                // creo e popolo la lista di Task, leggendo i dati dal db
                 dbData.tasks = new List<Task>();
                 dbData.tasks = getTasks();
 
-                // creo e popolo la lista di Resource
+                // creo e popolo la lista di Resource, leggendo i dati dal db
                 dbData.resources = new List<Resource>();
                 dbData.resources = getResources();
 
-                // creo e popolo la lista di Role
+                // creo e popolo la lista di Role, leggendo i dati dal db
                 dbData.roles = new List<Role>();
                 dbData.roles = getRoles();
 
@@ -55,34 +56,36 @@ namespace TWPROJECT_MVC.Controllers
 
             db.connection.Close();
 
-
+            // richiamo la pagina Gantt, passandogli l'oggetto con i dati che dovrà utilizzare
             return View(dbData);
         }
 
-        // GET: /Gantt/Gantt
+        // CONTROLLER EFFETTIVO PER LA PAGINA GANTT
+        // usando GET: /Gantt/Gantt chiamo la pagina che visualizza i dati, rappresentandoli attraverso un gantt
         public ActionResult Gantt()
         {
-            // imposto la lingua del testo della pagina
+            // imposto la lingua del testo della pagina (View/Gantt/Gantt.cshtml)
             setLanguage();
 
             try
             {
-                db = new SQLConnection(); // creo un oggetto SQLConnection
+                db = new SQLConnection(); // creo un oggetto SQLConnection con cui stabilire una connessione al database
 
-                dbData = new Data(); // creo un nuovo oggetto Data
+                dbData = new Data(); // creo un nuovo oggetto Data in cui è specificata la struttura dell'oggetto json, per la pagina Gantt (View/Gantt/Gantt.cshtml)
 
-                // creo e popolo la lista di Task
+                // creo e popolo la lista di Task, leggendo i dati dal db
                 dbData.tasks = new List<Task>();
                 dbData.tasks = getTasks();
 
-                // creo e popolo la lista di Resource
+                // creo e popolo la lista di Resource, leggendo i dati dal db
                 dbData.resources = new List<Resource>();
                 dbData.resources = getResources();
 
-                // creo e popolo la lista di Role
+                // creo e popolo la lista di Role, leggendo i dati dal db
                 dbData.roles = new List<Role>();
                 dbData.roles = getRoles();
 
+                // imposto i privilegi forniti all'utente che utilizzerà la pagina
                 dbData.canWrite = puoScrivere;
                 dbData.canAdd = puoAggiungere;
                 dbData.canDelete = puoEliminare;
@@ -99,7 +102,7 @@ namespace TWPROJECT_MVC.Controllers
             return View(dbData);
         }
 
-
+        // DA ELIMINARE
         // PROVA: GET: /Gantt/Prova
         public ActionResult Prova()
         {
@@ -151,8 +154,8 @@ namespace TWPROJECT_MVC.Controllers
 
             try
             {
-                int i = 0;
-                // read and memorize all received data
+                int i = 0; // utilizzato per la generazione di dati di prova
+                // leggo e memorizzo tutti i dati ricevuti dal db
                 while (reader.Read())
                 {
                     tasks.Add(new Task
@@ -178,12 +181,12 @@ namespace TWPROJECT_MVC.Controllers
                         collapsed = Convert.ToBoolean(reader["Collapsed"]),
                         hasChild = Convert.ToBoolean(reader["HasChild"]),
                         assigs = new List<string>(),
-                        moreInfo = createMoreInfoData(i)
+                        moreInfo = createMoreInfoData(i) // aggiungo dati di prova all'oggetto
                         
                     });
                     i++;
                 }
-
+                // chiudo la connessione con il db
                 reader.Close();
 
             }

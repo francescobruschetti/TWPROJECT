@@ -1,0 +1,89 @@
+/* DB CREATE TABLES AND INSERTS */
+create table Tasks
+(
+	ID int IDENTITY(1,1),
+	Name varchar(30) not null,
+	Progress int not null, 
+	ProgressByWorklog bit not null, 
+	Relevance int not null,
+	Type varchar(25) not null,
+	TypeId varchar(25) not null, 
+	Description varchar(50) not null, 
+	Code varchar(60) not null, 
+	Level int not null, 
+	Status varchar(20) not null, 
+	Depends varchar(20) not null, 
+	CanWrite bit not null, 
+	StartDate varchar(30) not null, 
+	Duration int not null, 
+	EndDate varchar(30) not null, 
+	StartIsMilestone bit not null, 
+	EndIsMilestone bit not null,
+	Collapsed bit not null,
+	HasChild bit not null,
+	PRIMARY KEY (ID)
+);
+
+create table Resources
+(
+	ID varchar(20) not null,
+	Name varchar(30) not null,
+	PRIMARY KEY (ID)
+);
+
+create table Roles
+(
+	ID varchar(20) not null,
+	Name varchar(30) not null,
+	PRIMARY KEY (ID)
+);
+
+
+// insert task 
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('Gantt editor #1', 0, 0, 0, '', '', 'Desc. Task G.e #1', '', 0, 'STATUS_ACTIVE', '', 1, '1396994400000', 20, '1399586399999', 0, 0, 0, 1);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('coding', 0, 0, 0, '', '', 'Desc. Task coding', '', 1, 'STATUS_ACTIVE', '', 1, '1396994400000', 10, '1398203999999', 0, 0, 0, 1);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('gantt part', 0, 0, 0, '', '', 'Desc. Task gantt part', '', 2, 'STATUS_ACTIVE', '', 1, '1396994400000', 2, '1397167199999', 0, 0, 0, 0);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('editor part', 0, 0, 0, '', '', 'Desc. Task editor part', '', 2, 'STATUS_SUSPENDED', '3', 1, '1397167200000', 4, '1397685599999', 0, 0, 0, 0);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('testing', 0, 0, 0, '', '', 'Desc. Task testing', '', 1, 'STATUS_SUSPENDED', '2:5', 1, '1398981600000', 5, '1399586399999', 0, 0, 0, 1);
+ 
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('test on safari', 0, 0, 0, '', '', 'Desc. Task test on safari', '', 2, 'STATUS_SUSPENDED', '', 1, '1398981600000', 2, '1399327199999', 0, 0, 0, 0);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('test on ie', 0, 0, 0, '', '', 'Desc. Task test on ie', '', 2, 'STATUS_SUSPENDED', '6', 1, '1399327200000', 3, '1399586399999', 0, 0, 0, 0);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('test on chrome', 0, 0, 0, '', '', 'Desc. Task test on chrome', '', 2, 'STATUS_SUSPENDED', '6', 1, '1399327200000', 2, '1399499999999', 0, 0, 0, 0);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('Fra Task', 50, 0, 0, '', '', 'Desc. Task Fra Task', '', 1, 'STATUS_ACTIVE', '6:2', 1, '1399327200000', 2, '1399499999999', 0, 0, 0, 0); 
+
+
+// insert Resources
+insert into Resources (ID, Name) values ('tmp_1', 'Resource 1');
+insert into Resources (ID, Name) values ('tmp_2', 'Resource 2');
+insert into Resources (ID, Name) values ('tmp_3', 'Resource 3');
+insert into Resources (ID, Name) values ('tmp_4', 'Resource 4');
+
+
+// insert Roles
+insert into Roles (ID, Name) values ('tmp_1', 'Project Manager');
+insert into Roles (ID, Name) values ('tmp_2', 'Worker');
+insert into Roles (ID, Name) values ('tmp_3', 'Stakeholder');
+insert into Roles (ID, Name) values ('tmp_4', 'Customer');
+
+
+
+
+
+
+
