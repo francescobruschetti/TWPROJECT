@@ -401,4 +401,7 @@
   <data name="InserisciSotto" xml:space="preserve">
     <value>Inserisci un'attività sotto quella selezionata</value>
   </data>
+  <data name="NoPrivilegi" xml:space="preserve">
+    <value>Spiacente, ma non possiedi i permessi per effettuare modifiche. Ogni cambiamento nella pagina, non verrà salvato.</value>
+  </data>
 </root>

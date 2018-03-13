@@ -583,6 +583,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Spiacente, ma non possiedi i permessi per effettuare modifiche. Ogni cambiamento nella pagina, non verrà salvato..
+        /// </summary>
+        internal static string NoPrivilegi {
+            get {
+                return ResourceManager.GetString("NoPrivilegi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Novembre.
         /// </summary>
         internal static string Novembre {

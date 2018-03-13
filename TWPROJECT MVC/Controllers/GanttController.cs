@@ -20,6 +20,11 @@ namespace TWPROJECT_MVC.Controllers
         public SQLConnection db;
         public static Data dbData;
 
+        // permessi (di prova)
+        private bool puoScrivere = false;
+        private bool puoAggiungere = false;
+        private bool puoEliminare = false;
+        private bool puoScrivereOnParent = false;
 
         // GET: /Gantt
         public ActionResult Index()
@@ -262,11 +267,6 @@ namespace TWPROJECT_MVC.Controllers
 
 
         // creo dati di prova
-        private bool puoScrivere = true;
-        private bool puoAggiungere = false;
-        private bool puoEliminare = false;
-        private bool puoScrivereOnParent = false;
-
         private MoreInfo createMoreInfoData(int i)
         {
             MoreInfo data = new MoreInfo();

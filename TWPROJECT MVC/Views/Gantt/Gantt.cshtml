@@ -111,10 +111,10 @@
                 "selectedRow": 2, "deletedTaskIds": [],
                 "resources": @Html.Raw(Json.Encode(Model.resources)),
                 "roles": @Html.Raw(Json.Encode(Model.roles)),
-                "canWrite": true,
-                "canDelete": true,
-                "canWriteOnParent": true,
-                "canAdd": true
+                "canAdd": @Json.Encode(Model.canAdd),
+                "canDelete": @Json.Encode(Model.canDelete),
+                "canWrite": @Json.Encode(Model.canWrite),
+                "canWriteOnParent": @Html.Raw(Json.Encode(Model.canWriteOnParent)),
             }
 
             //actualize data
@@ -122,7 +122,6 @@
             for (var i = 0; i < ret.tasks.length; i++) {
                 ret.tasks[i].start = ret.tasks[i].start + offset;
             }
-
             console.log(ret);
 
             return ret;
@@ -452,11 +451,10 @@
 
 
 
-    
+
     <div id="gantEditorTemplates" style="display:none;">
 
         <div class="__template__" type="GANTBUTTONS">
-            
             <!--
                         <div class="ganttButtonBar noprint">
                           <div class="buttons">
@@ -500,18 +498,18 @@
                             &nbsp; &nbsp; &nbsp; &nbsp;
                           <button onclick="saveGanttOnServer();" class="button first big requireWrite" title="@Resources.GanttLanguage.Salva">Salva</button>
                           <button onclick='newProject();' class='button requireWrite newproject'><em>Elimina progetto</em></button>
-                                <div class="alert alert-danger" role="alert" id="permissionsGranted" hidden="true">
-                                    Spiacente, ma non possiedi i permessi per effettuare modifiche. Ogni cambiamento nella pagina, non verrà salvato.
+                                <div class="alert alert-danger" role="alert" id="permissionsGranted" hidden="true" style="background-color: #FF5050">
+                                    @Resources.GanttLanguage.NoPrivilegi
                                 </div>
-                            
+
                           @*<button class="button login" title="login/enroll" onclick="loginEnroll($(this));" style="display:none;">login/enroll</button>
                           <button class="button opt collab" title="Start with Twproject" onclick="collaborate($(this));" style="display:none;"><em>collaborate</em></button>*@
                           </div></div>
-                -->       
+                -->
         </div>
-        
+
         <div class="__template__" type="TASKSEDITHEAD">
-            
+
             <table class="gdfTable" cellspacing="0" cellpadding="0">
               <thead>
               <tr style="height:40px">
@@ -530,7 +528,7 @@
               </tr>
               </thead>
             </table>
-            
+
         </div>
 
         <!-- template utilizzato per rappresentare le task e i relativi dettagli, all'interno della tabella vicina al gantt-->
@@ -808,6 +806,6 @@
             });
         }
 
-       
+
 
     </script>
