@@ -1,0 +1,404 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Agosto" xml:space="preserve">
+    <value>Agosto</value>
+  </data>
+  <data name="Annulla" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="Aprile" xml:space="preserve">
+    <value>Aprile</value>
+  </data>
+  <data name="Attivo" xml:space="preserve">
+    <value>Attivo</value>
+  </data>
+  <data name="Calendario" xml:space="preserve">
+    <value>Calendario</value>
+  </data>
+  <data name="CANNOT_CLOSE_TASK_IF_OPEN_ISSUE" xml:space="preserve">
+    <value>Non è possibile chiudere l'attività. Controllare gli eventuali errori.</value>
+    <comment>Cannot close a task with open issues</comment>
+  </data>
+  <data name="CANNOT_DEPENDS_ON_ANCESTORS" xml:space="preserve">
+    <value>Non può dipendere da un antenato.</value>
+    <comment>Cannot depend on ancestors.</comment>
+  </data>
+  <data name="CANNOT_MOVE_TASK" xml:space="preserve">
+    <value>CANNOT_MOVE_TASK</value>
+  </data>
+  <data name="CANNOT_WRITE" xml:space="preserve">
+    <value>Non hai i permessi per modificare l'attività:</value>
+    <comment>No permission to change the following task:</comment>
+  </data>
+  <data name="CHANGE_OUT_OF_SCOPE" xml:space="preserve">
+    <value>Non è possibile effettuare l'aggiornamento a causa della mancanzi dei permessi.</value>
+    <comment>Project update not possible as you lack rights for updating a parent project.</comment>
+  </data>
+  <data name="CIRCULAR_REFERENCE" xml:space="preserve">
+    <value>Dipendenza circolare.</value>
+    <comment>Circular reference.</comment>
+  </data>
+  <data name="Codice" xml:space="preserve">
+    <value>Codice</value>
+  </data>
+  <data name="CodiceAttivita" xml:space="preserve">
+    <value>Codice Attivià</value>
+  </data>
+  <data name="Completato" xml:space="preserve">
+    <value>Completato</value>
+  </data>
+  <data name="DatiEGantt" xml:space="preserve">
+    <value>Visualizza sia dati che grafico</value>
+  </data>
+  <data name="DescrizioneAttivita" xml:space="preserve">
+    <value>Descrizione attività</value>
+  </data>
+  <data name="DescrizioneAttività" xml:space="preserve">
+    <value>Descrizione attività</value>
+  </data>
+  <data name="Dicembre" xml:space="preserve">
+    <value>Dicembre</value>
+  </data>
+  <data name="Domenica" xml:space="preserve">
+    <value>Domenica</value>
+  </data>
+  <data name="Durata" xml:space="preserve">
+    <value>Dur.</value>
+  </data>
+  <data name="DurataInGiorni" xml:space="preserve">
+    <value>La durata è in numero di giorni.</value>
+  </data>
+  <data name="Elimina" xml:space="preserve">
+    <value>Elimina attività selezionata</value>
+  </data>
+  <data name="EliminaProgetto" xml:space="preserve">
+    <value>Elimina progetto</value>
+  </data>
+  <data name="END_IS_MILESTONE" xml:space="preserve">
+    <value>La data di fine è una milestone.</value>
+    <comment>End date is a milestone.</comment>
+  </data>
+  <data name="Fallito" xml:space="preserve">
+    <value>Fallito</value>
+  </data>
+  <data name="Febbraio" xml:space="preserve">
+    <value>Febbraio</value>
+  </data>
+  <data name="Fine" xml:space="preserve">
+    <value>Fine</value>
+  </data>
+  <data name="FineMilestone" xml:space="preserve">
+    <value>La data di fine attività è una milestone</value>
+  </data>
+  <data name="GANNT_ERROR_LOADING_DATA_TASK_REMOVED" xml:space="preserve">
+    <value>GANNT_ERROR_LOADING_DATA_TASK_REMOVED</value>
+  </data>
+  <data name="GANTT_ERROR_DEPENDS_ON_OPEN_TASK" xml:space="preserve">
+    <value>Errore a causa di un discendente di un'attività aperta.</value>
+    <comment>Error: there is a dependency on an open task.</comment>
+  </data>
+  <data name="GANTT_ERROR_DESCENDANT_OF_CLOSED_TASK" xml:space="preserve">
+    <value>Errore a causa di un discendente di un'attività chiusa.</value>
+    <comment>Error: there is a dependency on a close task.</comment>
+  </data>
+  <data name="GANTT_ERROR_LOADING_DATA_TASK_REMOVED" xml:space="preserve">
+    <value>Errore durante il caricamento dei dati. Un'attività è stata cancellata.</value>
+    <comment>An error has occurred while loading the data. A task has been trashed.</comment>
+  </data>
+  <data name="GANTT_QUARTER" xml:space="preserve">
+    <value>Quadrimestre</value>
+  </data>
+  <data name="GANTT_QUARTER_SHORT" xml:space="preserve">
+    <value>t.</value>
+  </data>
+  <data name="GANTT_SEMESTER" xml:space="preserve">
+    <value>Semestre</value>
+  </data>
+  <data name="GANTT_SEMESTER_SHORT" xml:space="preserve">
+    <value>s.</value>
+  </data>
+  <data name="GANTT_WEEK" xml:space="preserve">
+    <value>Settimana</value>
+  </data>
+  <data name="GANTT_WEEK_SHORT" xml:space="preserve">
+    <value>s.</value>
+  </data>
+  <data name="Gennaio" xml:space="preserve">
+    <value>Gennaio</value>
+  </data>
+  <data name="Giorni" xml:space="preserve">
+    <value>Giorni</value>
+  </data>
+  <data name="Giovedi" xml:space="preserve">
+    <value>Giovedì</value>
+  </data>
+  <data name="Giugno" xml:space="preserve">
+    <value>Giugno</value>
+  </data>
+  <data name="InAttesa" xml:space="preserve">
+    <value>In attesa</value>
+  </data>
+  <data name="Inizio" xml:space="preserve">
+    <value>Inizo</value>
+  </data>
+  <data name="InizioMilestone" xml:space="preserve">
+    <value>La data di inizio attività è una milestone</value>
+  </data>
+  <data name="INVALID_DATE_FORMAT" xml:space="preserve">
+    <value>Il formato della data inserito, non rispecchiano il formato richiesto.</value>
+    <comment>The data inserted are invalid for the field format.</comment>
+  </data>
+  <data name="Luglio" xml:space="preserve">
+    <value>Luglio</value>
+  </data>
+  <data name="Lunedi" xml:space="preserve">
+    <value>Lunedì</value>
+  </data>
+  <data name="Maggio" xml:space="preserve">
+    <value>Maggio</value>
+  </data>
+  <data name="Martedi" xml:space="preserve">
+    <value>Martedì</value>
+  </data>
+  <data name="Marzo" xml:space="preserve">
+    <value>Marzo</value>
+  </data>
+  <data name="Mercoledi" xml:space="preserve">
+    <value>Mercoledì</value>
+  </data>
+  <data name="Milestone" xml:space="preserve">
+    <value>è una milestone</value>
+  </data>
+  <data name="ModificaRisorse" xml:space="preserve">
+    <value>Modifica le risorse</value>
+  </data>
+  <data name="Nome" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="NonDefinito" xml:space="preserve">
+    <value>Non definito</value>
+  </data>
+  <data name="Novembre" xml:space="preserve">
+    <value>Novembre</value>
+  </data>
+  <data name="Ottobre" xml:space="preserve">
+    <value>Ottobre</value>
+  </data>
+  <data name="PercorsoCritico" xml:space="preserve">
+    <value>Visualizza percorso critico</value>
+  </data>
+  <data name="PLEASE_SAVE_PROJECT" xml:space="preserve">
+    <value>PLEASE_SAVE_PROJECT</value>
+  </data>
+  <data name="Progressi" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="Progresso" xml:space="preserve">
+    <value>Progresso</value>
+  </data>
+  <data name="Relazioni" xml:space="preserve">
+    <value>Relazioni</value>
+  </data>
+  <data name="Ripristina" xml:space="preserve">
+    <value>Ripristina</value>
+  </data>
+  <data name="RisorsaAssociata" xml:space="preserve">
+    <value>Risorsa Associata</value>
+  </data>
+  <data name="Risorse" xml:space="preserve">
+    <value>Risorse</value>
+  </data>
+  <data name="Ruolo" xml:space="preserve">
+    <value>Ruolo</value>
+  </data>
+  <data name="Sabato" xml:space="preserve">
+    <value>Sabato</value>
+  </data>
+  <data name="Salva" xml:space="preserve">
+    <value>Salva</value>
+  </data>
+  <data name="Settembre" xml:space="preserve">
+    <value>Settembre</value>
+  </data>
+  <data name="SoloDati" xml:space="preserve">
+    <value>Visualizza solo i dati</value>
+  </data>
+  <data name="SoloGantt" xml:space="preserve">
+    <value>Visualizza solo il grafico</value>
+  </data>
+  <data name="Sospeso" xml:space="preserve">
+    <value>Sospeso</value>
+  </data>
+  <data name="SpostaGiu" xml:space="preserve">
+    <value>Sposta in giù</value>
+  </data>
+  <data name="SpostaMenoProfondo" xml:space="preserve">
+    <value>Sposta l'attività ad un livello più alto</value>
+  </data>
+  <data name="SpostaPiuProfondo" xml:space="preserve">
+    <value>Sposta l'attività ad un livello più basso</value>
+  </data>
+  <data name="SpostaSu" xml:space="preserve">
+    <value>Sposta in su</value>
+  </data>
+  <data name="Stampa" xml:space="preserve">
+    <value>Stampa</value>
+  </data>
+  <data name="START_IS_MILESTONE" xml:space="preserve">
+    <value>La data di inizio è una milestone.</value>
+    <comment>Start date is a milestone.</comment>
+  </data>
+  <data name="Stato" xml:space="preserve">
+    <value>Stato</value>
+  </data>
+  <data name="TASK_HAS_CONSTRAINTS" xml:space="preserve">
+    <value>Quest'attività ha delle restrizioni.</value>
+    <comment>Task has constraints.</comment>
+  </data>
+  <data name="TASK_HAS_EXTERNAL_DEPS" xml:space="preserve">
+    <value>Quest'attività ha dipendenze esterne.</value>
+    <comment>This task has external dependencies.</comment>
+  </data>
+  <data name="TASK_MOVE_INCONSISTENT_LEVEL" xml:space="preserve">
+    <value>Non è possibile spostare attività con diversa profondità.</value>
+    <comment>You cannot exchange tasks of different depth.</comment>
+  </data>
+  <data name="TitoloModificaAttivita" xml:space="preserve">
+    <value>Modifica Attività</value>
+  </data>
+  <data name="TitoloModificaRisorse" xml:space="preserve">
+    <value>Risorse progetto</value>
+  </data>
+  <data name="Venerdi" xml:space="preserve">
+    <value>Venerdì</value>
+  </data>
+  <data name="ZoomIn" xml:space="preserve">
+    <value>Ingrandisci</value>
+  </data>
+  <data name="ZoomOut" xml:space="preserve">
+    <value>Rimpicciolisci</value>
+  </data>
+  <data name="InserisciSopra" xml:space="preserve">
+    <value>Inserisci un'attività sopra quella selezionata</value>
+  </data>
+  <data name="InserisciSotto" xml:space="preserve">
+    <value>Inserisci un'attività sotto quella selezionata</value>
+  </data>
+</root>
