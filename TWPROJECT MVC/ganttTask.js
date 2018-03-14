@@ -382,7 +382,9 @@ Task.prototype.computeStartBySuperiors = function (proposedStart) {
   if (sups && sups.length > 0) {
     supEnd=0;
     for (var i = 0; i < sups.length; i++) {
-      var link = sups[i];
+        var link = sups[i];
+        console.log("LAG tra task: " + link.lag);
+
       supEnd = Math.max(supEnd, incrementDateByUnits(new Date(link.from.end), link.lag));
     }
     supEnd+=1;

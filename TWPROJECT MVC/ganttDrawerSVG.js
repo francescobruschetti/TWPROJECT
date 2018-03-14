@@ -73,8 +73,6 @@ Ganttalendar.prototype.zoomGantt = function (isPlus) {
   }
 };
 
-
-
 Ganttalendar.prototype.getStoredZoomLevel = function () {
   if (localStorage  && localStorage.getObject("TWPGanttSavedZooms")) {
     var savedZooms = localStorage.getObject("TWPGanttSavedZooms");
@@ -228,7 +226,7 @@ Ganttalendar.prototype.drawTask = function (task) {
     }
 
     var taskBox = $(_createTaskSVG(task));
-  task.ganttElement = taskBox;
+   task.ganttElement = taskBox;
 
 
   if (self.showCriticalPath && task.isCritical)
@@ -401,16 +399,18 @@ Ganttalendar.prototype.drawTask = function (task) {
 
   //prof.stop();
 
-
+    // prende i dati relativi alla task, e costruisce gli oggetti che ne compongono l'oggetto grafico
     function _createTaskSVG(task) {
     var svg = self.svg;
 
+    console.log("before x: " + task.x + " y: " + task.y);
         var dimensions = {
             x     : Math.round((task.start - self.startMillis) * self.fx),
             y     : task.rowElement.position().top + task.rowElement.offsetParent().scrollTop() + self.taskVertOffset,
             width : Math.max(Math.round((task.end - task.start) * self.fx), 1),
             height: (self.master.showBaselines ? self.taskHeight / 1.3 : self.taskHeight)
         };
+    console.log("after x: " + dimensions.x + " y: " + dimensions.y);
     var taskSvg = svg.svg(self.tasksGroup, dimensions.x, dimensions.y, dimensions.width, dimensions.height, {class:"taskBox taskBoxSVG taskStatusSVG", status:task.status, taskid:task.id,fill:task.color||"#eee" });
 
     //svg.title(taskSvg, task.name);
@@ -465,8 +465,6 @@ Ganttalendar.prototype.drawTask = function (task) {
             width : Math.max(Math.round((baseline.endDate - baseline.startDate) * self.fx), 1),
             height: (self.master.showBaselines ? self.taskHeight / 1.5 : self.taskHeight)
         };
-
-        alert("X:" + x);
         var taskSvg = svg.svg(self.tasksGroup, dimensions.x, dimensions.y, dimensions.width, dimensions.height, {class: "taskBox taskBoxSVG taskStatusSVG baseline", status: baseline.status, taskid: task.id, fill: task.color || "#eee" });
 
         //tooltip
@@ -726,6 +724,7 @@ Ganttalendar.prototype.redrawTasks = function (drawAll) {
   var endRowAdd =self.master.firstScreenLine+self.master.numOfVisibleRows+self.master.rowBufferSize;
 
     //  $("#linksGroup,#tasksGroup").empty();
+  // prima di ridisegnare le task, rimuove tutte quelle presenti nel grafico, in modo da evitare di averne di doppie
   $("#tasksGroup").empty();
   var gridGroup=$("#gridGroup").empty().get(0);
 
@@ -835,14 +834,14 @@ Ganttalendar.prototype.redraw = function () {
     var domEl = this.createGanttGrid();
   this.element = domEl;
   par.append(domEl);
-  this.redrawTasks();
+  this.redrawTasks(); // chiamata ogni volta che si vuole rappresentare una task sul grafico
 
   //set old scroll  
   par.scrollTop(scrollY);
   par.scrollLeft(scrollX);
 
   } else {
-    this.redrawTasks();
+    this.redrawTasks(); // chiamata quando una task viene trascinata o quando si collegano due trask
   }
 
 

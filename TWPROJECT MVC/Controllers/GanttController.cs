@@ -30,34 +30,7 @@ namespace TWPROJECT_MVC.Controllers
         // GET: /Gantt
         public ActionResult Index()
         {
-
-            try
-            {
-                db = new SQLConnection(); // creo un oggetto SQLConnection con cui stabilire una connessione al database
-
-                dbData = new Data(); // creo un nuovo oggetto Data in cui è specificata la struttura dell'oggetto json, per la pagina Gantt (View/Gantt/Gantt.cshtml)
-
-                // creo e popolo la lista di Task, leggendo i dati dal db
-                dbData.tasks = new List<Task>();
-                dbData.tasks = getTasks();
-
-                // creo e popolo la lista di Resource, leggendo i dati dal db
-                dbData.resources = new List<Resource>();
-                dbData.resources = getResources();
-
-                // creo e popolo la lista di Role, leggendo i dati dal db
-                dbData.roles = new List<Role>();
-                dbData.roles = getRoles();
-
-            }
-            catch (SqlException e)
-            {
-            }
-
-            db.connection.Close();
-
-            // richiamo la pagina Gantt, passandogli l'oggetto con i dati che dovrà utilizzare
-            return View(dbData);
+            return View();
         }
 
         // CONTROLLER EFFETTIVO PER LA PAGINA GANTT

@@ -109,7 +109,7 @@ GanttMaster.prototype.init = function (workSpace) {
   place.append(this.editor.gridified);
 
     //create gantt
-  this.gantt = new Ganttalendar(new Date().getTime(), new Date().getTime() + 3600000 * 24 * 5, this, place.width() * .6); //  - 3600000 * 24 * 2
+  this.gantt = new Ganttalendar(new Date().getTime() - 3600000 * 24 * 2, new Date().getTime() + 3600000 * 24 * 5, this, place.width() * .6); //  - 3600000 * 24 * 2
 
   //setup splitter
   self.splitter = $.splittify.init(place, this.editor.gridified, this.gantt.element, 60);
@@ -468,8 +468,11 @@ GanttMaster.prototype.loadProject = function (project) {
   //shift dates in order to have client side the same hour (e.g.: 23:59) of the server side
   for (var i = 0; i < project.tasks.length; i++) {
     var task = project.tasks[i];
+    // aggiunge un offset in modo da avere le task posizionate su oggi: 
     task.start += this.serverClientTimeOffset;
+    // aggiunge un offset: 
     task.end += this.serverClientTimeOffset;
+
     //set initial collapsed status
     task.collapsed=collTasks.indexOf(task.id)>=0;
   }
@@ -946,8 +949,13 @@ GanttMaster.prototype.updateLinks = function (task) {
           todoOk = false;
 
         } else {
-          this.links.push(new Link(sup, task, lag));
-          newDepsString = newDepsString + (newDepsString.length > 0 ? "," : "") + supStr+(lag==0?"":":"+durationToString(lag));
+            // calcolo il numero di giorni tra le due task che l'utente sta cercando di unire, in modo da mantenere la distanza.
+            // OSS: "task" è il figlio e "sup" il padre
+            var millisec = task.start - sup.end;
+            lag = Math.floor(millisec / (24 * 60 * 60 * 1000));
+
+            this.links.push(new Link(sup, task, lag));
+            newDepsString = newDepsString + (newDepsString.length > 0 ? "," : "") + supStr; //+(lag==0?"":":"+durationToString(lag));
         }
 
         if (todoOk)
@@ -956,10 +964,21 @@ GanttMaster.prototype.updateLinks = function (task) {
     }
     task.depends = newDepsString;
   }
-  //prof.stop();
+    //prof.stop();
+
+
+  
 
   return todoOk;
 };
+
+
+// funzione che calcola il numero di giorni tra la data(in millisec) del padre, e la data di inizio del figlio
+/*GanttMaster.prototype.getLagBetweenTimes = function (sup, task) {
+    var millisec = sup.end - task.start;
+    var gg = millisec.asDays();
+    return gg;
+};*/
 
 
 GanttMaster.prototype.moveUpCurrentTask = function () {

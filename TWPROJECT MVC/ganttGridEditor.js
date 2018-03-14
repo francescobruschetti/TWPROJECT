@@ -383,13 +383,16 @@ GridEditor.prototype.bindRowInputEvents = function (task, taskRow) {
             oneWaiting=oneWaiting|| sups[i].from.status=="STATUS_WAITING";
           }
 
+          // AGGIORNAMENTO TIPO ATTIVITA
+          // commentato per evitare che venga cambiato il tipo della task, quando questa viene collegata ad un altro
+          /*
           if (oneFailed){
             task.changeStatus("STATUS_FAILED")
           } else if (oneUndefined){
             task.changeStatus("STATUS_UNDEFINED")
           } else if (oneActive){
             //task.changeStatus("STATUS_SUSPENDED")
-            task.changeStatus("STATUS_WAITING")
+             task.changeStatus("STATUS_WAITING")
           } else  if (oneSuspended){
             task.changeStatus("STATUS_SUSPENDED")
           } else  if (oneWaiting){
@@ -397,6 +400,7 @@ GridEditor.prototype.bindRowInputEvents = function (task, taskRow) {
           } else {
             task.changeStatus("STATUS_ACTIVE")
           }
+          */
 
           self.master.changeTaskDeps(task); //dates recomputation from dependencies
         }

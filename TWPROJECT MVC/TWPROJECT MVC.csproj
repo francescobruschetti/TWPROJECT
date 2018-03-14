@@ -178,7 +178,6 @@
     <Content Include="scripts\res\icons.eot" />
     <Content Include="scripts\res\icons.ttf" />
     <Content Include="scripts\res\icons.woff" />
-    <Content Include="Views\Gantt\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_GlobalResources\GanttLanguage.en.designer.cs">
@@ -219,6 +218,7 @@
     <Content Include="Views\Gantt\Gantt.cshtml" />
     <Content Include="Views\Gantt\Gantt - backup%28120318%29.cshtml" />
     <Content Include="Views\Gantt\Prova.cshtml" />
+    <Content Include="Views\Gantt\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
