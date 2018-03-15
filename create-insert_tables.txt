@@ -67,6 +67,63 @@ values ('test on chrome', 0, 0, 0, '', '', 'Desc. Task test on chrome', '', 2, '
 insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
 values ('Fra Task', 50, 0, 0, '', '', 'Desc. Task Fra Task', '', 1, 'STATUS_ACTIVE', '6:2', 1, '1399327200000', 2, '1399499999999', 0, 0, 0, 0); 
 
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('Fra Task 2', 30, 0, 0, '', '', 'Desc. Task Fra Task 2', '', 2, 'STATUS_ACTIVE', '', 1, '1399327200000', 2, '1399499999999', 0, 0, 0, 0);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('Fra Task 3', 20, 0, 0, '', '', 'Desc. Task Fra Task 3', '', 1, 'STATUS_ACTIVE', '6', 1, '1399327200000', 2, '1399499999999', 0, 0, 0, 0); 
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('Fra Task 4', 75, 0, 0, '', '', 'Desc. Task Fra Task 4', '', 2, 'STATUS_ACTIVE', '', 1, '1399327200000', 2, '1399499999999', 0, 0, 0, 0);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('Fra Task 6', 0, 0, 0, '', '', 'Desc. Task Fra Task 6', '', 2, 'STATUS_ACTIVE', '', 1, '1399327200000', 2, '1399499999999', 0, 0, 0, 0);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('Fra Task 5', 100, 0, 0, '', '', 'Desc. Task Fra Task 5', '', 2, 'STATUS_ACTIVE', '', 1, '1399327200000', 2, '1399499999999', 0, 0, 0, 0);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('Fra 1', 0, 0, 0, '', '', 'Desc. Task Fra 1', '', 1, 'STATUS_ACTIVE', '', 1, '1399327200000', 2, '1399499999999', 0, 0, 0, 0);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('Fra 2', 10, 0, 0, '', '', 'Desc. Task Fra 2', '', 1, 'STATUS_ACTIVE', '', 1, '1399327200000', 2, '1399499999999', 0, 0, 0, 0);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('Fra 3', 15, 0, 0, '', '', 'Desc. Task Fra 3', '', 1, 'STATUS_ACTIVE', '', 1, '1399327200000', 2, '1399499999999', 0, 0, 0, 0);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('Fra 4', 40, 0, 0, '', '', 'Desc. Task Fra 4', '', 1, 'STATUS_ACTIVE', '', 1, '1397858400000', 2, '1398031300000', 0, 0, 0, 0);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('Fra 5', 50, 0, 0, '', '', 'Desc. Task Fra 5', '', 1, 'STATUS_ACTIVE', '', 1, '1399327200000', 2, '1399499999999', 0, 0, 0, 0);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('Fra 6', 60, 0, 0, '', '', 'Desc. Task Fra 6', '', 1, 'STATUS_ACTIVE', '', 1, '1398204100000', 3, '1398463300000', 0, 0, 0, 0);
+
+insert into tasks (Name, Progress, ProgressByWorklog, Relevance, Type, TypeID, Description, Code, Level, Status, Depends, CanWrite, StartDate, Duration, EndDate, StartIsMilestone, EndIsMilestone, Collapsed, HasChild)
+values ('Fra 7', 70, 0, 0, '', '', 'Desc. Task Fra 7', '', 1, 'STATUS_ACTIVE', '', 1, '1399327200000', 1, '1399413600000', 0, 0, 0, 0);
+
+// le durate delle insert precedenti, sono corrette sono calcolate tenendo conto dei weekend (la durata non conta i weekend)
+// eseguendo le seguenti update, si aggiungono anche i giorni dei weekend
+update tasks set duration = '30' where id = 1;
+update tasks set duration = '14' where id = 2;
+update tasks set duration = '2' where id = 3;
+update tasks set duration = '6' where id = 4;
+update tasks set duration = '7' where id = 5;
+update tasks set duration = '4' where id = 6;
+update tasks set duration = '3' where id = 7;
+update tasks set duration = '2' where id = 8;
+update tasks set duration = '2' where id = 9;
+update tasks set duration = '2' where id = 10;
+update tasks set duration = '2' where id = 11;
+update tasks set duration = '2' where id = 12;
+update tasks set duration = '2' where id = 13;
+update tasks set duration = '2' where id = 14;
+update tasks set duration = '6' where id = 15;
+update tasks set duration = '2' where id = 16;
+update tasks set duration = '6' where id = 17;
+update tasks set duration = '2' where id = 1002;
+update tasks set duration = '2' where id = 103;
 
 // insert Resources
 insert into Resources (ID, Name) values ('tmp_1', 'Resource 1');

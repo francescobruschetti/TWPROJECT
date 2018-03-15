@@ -591,7 +591,7 @@ GanttMaster.prototype.getResource = function (resId) {
 
 
 GanttMaster.prototype.changeTaskDeps = function (task) {
-  return task.moveTo(task.start,false,true);
+  return task.moveTo(task.start,false,true, task);
 };
 
 GanttMaster.prototype.changeTaskDates = function (task, start, end) {
@@ -601,7 +601,7 @@ GanttMaster.prototype.changeTaskDates = function (task, start, end) {
 
 
 GanttMaster.prototype.moveTask = function (task, newStart) {
-  return task.moveTo(newStart, true,true);
+    return task.moveTo(newStart, true, true, task);
 };
 
 

@@ -141,7 +141,7 @@ Task.prototype.setPeriod = function (start, end) {
   }
 
   if (newDuration == this.duration) { // is shift
-    return this.moveTo(start, false,true);
+    return this.moveTo(start, false,true, this);
   }
 
   var wantedStartMillis = start;
@@ -161,9 +161,9 @@ Task.prototype.setPeriod = function (start, end) {
   }
 
   //if there are dependencies compute the start date and eventually moveTo
-  var startBySuperiors = this.computeStartBySuperiors(start);
+  var startBySuperiors = this.computeStartBySuperiors(start, originalPeriod);
   if (startBySuperiors != start) {
-    return this.moveTo(startBySuperiors, false,true);
+    return this.moveTo(startBySuperiors, false,true, this);
   }
 
   var somethingChanged = false;
@@ -231,7 +231,7 @@ Task.prototype.setPeriod = function (start, end) {
     }
     this.duration = recomputeDuration(this.start, this.end);
     if (this.master.shrinkParent ) {
-      todoOk = updateTree(this);
+      todoOk = updateTree(this, originalPeriod);
     }
 
   } else {
@@ -244,19 +244,21 @@ Task.prototype.setPeriod = function (start, end) {
 
     //console.debug("set period: somethingChanged",this);
     if (todoOk ) {
-      todoOk = updateTree(this);
+      todoOk = updateTree(this, originalPeriod);
     }
   }
 
   if (todoOk) {
-    todoOk = this.propagateToInferiors(end);
+      // originale: todoOk = this.propagateToInferiors(end);
+      // modificato per passare alla funzione anche i dati originali della task "this"
+    todoOk = this.propagateToInferiors(end, originalPeriod);
   }
   return todoOk;
 };
 
 
 //<%---------- MOVE TO ---------------------- --%>
-Task.prototype.moveTo = function (start, ignoreMilestones, propagateToInferiors) {
+Task.prototype.moveTo = function (start, ignoreMilestones, propagateToInferiors, taskPadre) {
   //console.debug("moveTo ",this.name,new Date(start),this.duration,ignoreMilestones);
   //var profiler = new Profiler("gt_task_moveTo");
 
@@ -264,10 +266,21 @@ Task.prototype.moveTo = function (start, ignoreMilestones, propagateToInferiors)
     start = start.getTime();
   }
 
-  var originalPeriod = {
-    start: this.start,
-    end:   this.end
-  };
+    // aggiunto per estrarre i dati origniali della task
+  var originalPeriod;
+  if (taskPadre != null) {
+      originalPeriod = {
+          start: taskPadre.start,
+          end: taskPadre.end
+      };
+  }
+  else {
+      // codice originale
+      originalPeriod = {
+          start: this.start,
+          end: this.end
+      };
+  }
 
   var wantedStartMillis = start;
 
@@ -275,7 +288,7 @@ Task.prototype.moveTo = function (start, ignoreMilestones, propagateToInferiors)
   start = computeStart(start);
 
   //if depends, start is set to max end + lag of superior
-  start = this.computeStartBySuperiors(start);
+  start = this.computeStartBySuperiors(start, originalPeriod);
 
   var end = computeEndByDuration(start, this.duration);
 
@@ -310,20 +323,24 @@ Task.prototype.moveTo = function (start, ignoreMilestones, propagateToInferiors)
     for (var i = 0; i < children.length; i++) {
       var ch = children[i];
       var chStart=incrementDateByUnits(new Date(ch.start),panDeltaInWM);
-      ch.moveTo(chStart,false,false);
+      ch.moveTo(chStart,false,false, originalPeriod);
       }
 
-    if (!updateTree(this)) {
+    if (!updateTree(this, originalPeriod)) {
       return false;
     }
 
     if (propagateToInferiors) {
-      this.propagateToInferiors(end);
+        // originale:  this.propagateToInferiors(end);
+        // modificato per passare alla funzione anche i dati originali della task "this"
+      this.propagateToInferiors(end, originalPeriod);
       var todoOk = true;
       var descendants = this.getDescendant();
       for (var i = 0; i < descendants.length; i++) {
-        ch = descendants[i];
-        if (!ch.propagateToInferiors(ch.end))
+          ch = descendants[i];
+          // originale: if (!ch.propagateToInferiors(ch.end))
+          // modificato per passare alla funzione anche i dati originali della task "this"
+        if (!ch.propagateToInferiors(ch.end, ch.originalPeriod))
           return false;
       }
     }
@@ -353,7 +370,7 @@ Task.prototype.checkMilestonesConstraints = function (newStart,newEnd,ignoreMile
 };
 
 //<%---------- PROPAGATE TO INFERIORS ---------------------- --%>
-Task.prototype.propagateToInferiors = function (end) {
+Task.prototype.propagateToInferiors = function (end, origanalPeriod) {
   //console.debug("propagateToInferiors "+this.name)
   //and now propagate to inferiors
   var todoOk = true;
@@ -365,7 +382,7 @@ Task.prototype.propagateToInferiors = function (end) {
         this.master.setErrorOnTransaction(GanttMaster.messages["CANNOT_WRITE"] + "\n\"" + link.to.name + "\"", link.to);
         break;
       }
-      todoOk = link.to.moveTo(end, false,true); //this is not the right date but moveTo checks start
+      todoOk = link.to.moveTo(end, false, true, origanalPeriod); //this is not the right date but moveTo checks start
       if (!todoOk)
         break;
     }
@@ -375,25 +392,102 @@ Task.prototype.propagateToInferiors = function (end) {
 
 
 //<%---------- COMPUTE START BY SUPERIORS ---------------------- --%>
-Task.prototype.computeStartBySuperiors = function (proposedStart) {
+// originale: computeStartBySuperiors = function (proposedStart) {
+// mi serve la var originalPeriod in modo da ripristinare le date della task padre,
+// se l'utente, nel caso in cui la task padre abbia una data di fine maggiore di quella iniziale del figlio,
+// decide di annullare l'operazione
+Task.prototype.computeStartBySuperiors = function (proposedStart, originalPeriod) {
   //if depends -> start is set to max end + lag of superior
   var supEnd=proposedStart;
   var sups = this.getSuperiors();
   if (sups && sups.length > 0) {
     supEnd=0;
     for (var i = 0; i < sups.length; i++) {
-        var link = sups[i];
-        console.log("LAG tra task: " + link.lag);
+        // controllo che il "lag"(giorni) tra la data di fine della task padre, e quella di inizio del figlio, sia ancora corretta. Altrimenti l'aggiorno
+        //  versione 1: prende i dati e li visualizza nel grafico, senza nessun controllo
+        /*    sups[i].lag = checkLagValue(sups[i]);
+            var link = sups[i];
+            supEnd = Math.max(supEnd, incrementDateByUnits(new Date(link.from.end), link.lag));
+        */
 
-      supEnd = Math.max(supEnd, incrementDateByUnits(new Date(link.from.end), link.lag));
+        //versione 2: legge i dati ricevuti e prima di visualizzare nel grafico, fa dei controlli sulle dati di inizo e fine delle task
+        var retLag = checkLagValue(sups[i]);
+        if (retLag[0] != false) {
+            
+            sups[i].lag = retLag[0];
+
+                var link = sups[i];
+
+                supEnd = Math.max(supEnd, incrementDateByUnits(new Date(link.from.end), link.lag));
+            
+        }
+        else {
+            // vuol dire che la data di fine della task padre, è maggiore della data di inizio della task figlio.
+            // cosa faccio ????
+            var r = confirm("La data di fine della task che stai modificando, è maggiore della data di inizio della task figlia. Vuoi continuare?");
+            if (r == false) {
+                var x = this;
+                // NON FUNZIONA
+                // ripristino la data di fine dell'attivià padre, in modo da annullare l'operazione
+                var parent = this.getSuperiors()[i];
+                parent.from.end = originalPeriod.end;
+                parent.from.start = originalPeriod.start;
+                parent.from.duration = originalPeriod.duration;
+
+                supEnd = Math.max(supEnd, incrementDateByUnits(new Date(sups[i].from.end), sups[i].lag));
+            }
+            else {
+                // procedo comunque la creazione della relazione
+                sups[i].lag = retLag[1];
+
+                var link = sups[i];
+
+                supEnd = Math.max(supEnd, incrementDateByUnits(new Date(link.from.end), link.lag));
+            }
+        }
     }
     supEnd+=1;
   }
   return computeStart(supEnd);
 };
 
+// data un "superior", che contiente la task padre, quella figlio e il valore del lag(numero di giorni), controllo che il lag sia coerente con la differenza di giorni tra la data di fine del padre e la data di inizio del figlio
+function checkLagValue(superior)
+{
+    var ret = [];
+    var calcolaLag = true;
 
-function updateTree(task) {
+    var millisec = (superior.to.start - superior.from.end);
+    var calculatedLag = Math.floor(millisec / (24 * 60 * 60 * 1000));
+    // controllo il valore di millisecondi tra le due task
+    if (millisec < 0)
+    {
+        // vuol dire che la data di fine della task padre, è maggiore della data di inizio della task figlio.
+        // cosa faccio ????
+    //    var r = confirm("La data di fine della task che stai modificando, è maggiore della data di inizio della task figlia. Vuoi continuare?");
+    //    if (r == false) {
+        ret.push(false);
+        ret.push(calculatedLag);
+        calcolaLag = false;
+    //    }
+    }
+
+    if (calcolaLag) {
+
+        if (calculatedLag == superior.lag) {
+            ret.push(superior.lag);
+        }
+        else {
+            ret.push(calculatedLag);
+        }
+    }
+
+    return ret;
+}
+
+// originale: updateTree(task)
+// - originalPeriod: mi serve per sapere i valori iniziali della task, prima della modifica
+function updateTree(task, originalPeriod) {
   //console.debug("updateTree ",task.code,task.name, new Date(task.start), new Date(task.end));
   var error;
 
@@ -946,7 +1040,7 @@ Task.prototype.indent = function () {
     //recompute depends string
     this.master.updateDependsStrings();
     //enlarge parent using a fake set period
-    updateTree(this);
+    updateTree(this, null);
     //force status check starting from parent
     this.getParent().synchronizeStatus();
   }
