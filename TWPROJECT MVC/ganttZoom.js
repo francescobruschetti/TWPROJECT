@@ -57,7 +57,9 @@
     row2:        function (date, ctxHead, ctxBody) {
       var start = new Date(date.getTime());
       date.setDate(date.getDate() + 1);
-      var holyClass = isHoliday(start) ? "holy" : "";
+        // originale: var holyClass = isHoliday(start) ? "holy" : "";
+        // coloro le date che sono "holliday" oppure "FineSettimana"
+      var holyClass = (isHoliday(start) || isWeekEnd(start)) ? "holy" : "";
       self.createHeadCell(2,this,ctxHead,start.format("EEE d"), 1, "headSmall "+holyClass, start,date);
       self.createBodyCell(this,ctxBody,1, start.getDay() % 7 == (self.master.firstDayOfWeek + 6) % 7, holyClass);
     }
@@ -83,7 +85,9 @@
     row2:        function (date, ctxHead, ctxBody) {
       var start = new Date(date.getTime());
       date.setDate(date.getDate() + 1);
-      var holyClass = isHoliday(start) ? "holy" : "";
+        // originale: var holyClass = isHoliday(start) ? "holy" : "";
+        // coloro le date che sono "holliday" oppure "FineSettimana"
+      var holyClass = (isHoliday(start) || isWeekEnd(start)) ? "holy" : "";
       self.createHeadCell(2,this,ctxHead,start.format("EEEE").substr(0, 1)+" ("+start.format("dd")+")", 1, "headSmall "+holyClass, start,date);
       self.createBodyCell(this,ctxBody,1, start.getDay() % 7 == (self.master.firstDayOfWeek + 6) % 7, holyClass);
     }
@@ -107,7 +111,9 @@
     row2:        function (date, tr2, trBody) {
      var start = new Date(date.getTime());
       date.setDate(date.getDate() + 1);
-      var holyClass = isHoliday(start) ? "holy" : "";
+        // originale: var holyClass = isHoliday(start) ? "holy" : "";
+        // coloro le date che sono "holliday" oppure "FineSettimana"
+      var holyClass = (isHoliday(start) || isWeekEnd(start)) ? "holy" : "";
       self.createHeadCell(2,this,tr2,start.format("EEEE").substr(0, 1), 1, "headSmall "+holyClass, start,date);
       self.createBodyCell(this,trBody,1, start.getDay() % 7 == (self.master.firstDayOfWeek + 6) % 7, holyClass);
     }
@@ -135,7 +141,9 @@
     row2:        function (date, tr2, trBody) {
       var start = new Date(date.getTime());
       date.setDate(date.getDate() + 1);
-      var holyClass = isHoliday(start) ? "holy" : "";
+        // originale: var holyClass = isHoliday(start) ? "holy" : "";
+        // coloro le date che sono "holliday" oppure "FineSettimana"
+      var holyClass = (isHoliday(start) || isWeekEnd(start)) ? "holy" : "";
       self.createHeadCell(2,this,tr2,start.format("d"), 1, "headSmall "+holyClass, start,date);
       var nd = new Date(start.getTime());
       nd.setDate(start.getDate() + 1);

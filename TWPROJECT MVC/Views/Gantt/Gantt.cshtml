@@ -125,8 +125,9 @@
             "canWriteOnParent": @Html.Raw(Json.Encode(Model.canWriteOnParent)),
         }
 
-        // ??? actualize data
-        var offset = 0; //new Date().getTime() - ret.tasks[0].start;
+        // il ciclo seguente, prende le task dell'oggetto ret e calcola un offset.
+        // applica l'offset alle date delle task, in modo da spostarle dalla loro data origininale, alla data odierna (mantenendo il loro ordinamento)
+        var offset = 0; //codice per calcolare l'offset tra la data di oggi e quella della prima tasknew Date().getTime() - ret.tasks[0].start;
         for (var i = 0; i < ret.tasks.length; i++) {
             ret.tasks[i].start = ret.tasks[i].start + offset;
         }

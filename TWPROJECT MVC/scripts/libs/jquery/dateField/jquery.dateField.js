@@ -204,8 +204,11 @@ jQuery.fn.dateField = function(options) {
       var d = new Date(date);
       d.setFirstDayOfThisWeek(options.firstDayOfWeek);
       for (var i = 0; i < 7; i++) {
-        var span = $("<span>").addClass("calDayHeader").attr("day", d.getDay());
-        if (d.isHoliday())
+          var span = $("<span>").addClass("calDayHeader").attr("day", d.getDay());
+
+          // originale: if (d.isHoliday())
+          // coloro le date che sono "holliday" oppure "FineSettimana"
+        if (d.isHoliday() || d.isWeekEnd())
           span.addClass("holy");
         span.css("width",w+"%");
         span.html(Date.dayAbbreviations[d.getDay()]);
@@ -234,7 +237,9 @@ jQuery.fn.dateField = function(options) {
         if (d.getYear() == date.getYear() && d.getMonth() == date.getMonth() && d.getDate() == date.getDate())
           span.addClass("selected");
 
-        if (d.isHoliday())
+          // originale: if (d.isHoliday() )
+          // coloro le date che sono "holliday" oppure "FineSettimana"
+        if (d.isHoliday() || d.isWeekEnd())
           span.addClass("holy");
 
         if(d.getMonth()!=date.getMonth())

@@ -122,14 +122,25 @@ Number.minusSign = "-";
 Number.currencyFormat = "###,##0.00";
 
 
+// modificati per rispecchiare i valori dei dati friIsHoly, satIsHoly, SunIsHoly
+// valori originali
+// var millisInWorkingDay =28800000;
+// var workingDaysPerWeek =5;
 
-var millisInWorkingDay =28800000;
-var workingDaysPerWeek =5;
+var millisInWorkingDay = 40320000;
+var workingDaysPerWeek = 7;
 
 function isHoliday(date) {
+  /* dati originali: 
+      var friIsHoly =false;
+      var satIsHoly =true;
+      var sunIsHoly =true;
+
+      Modificati in modo da poter mettere una task anche durante il fine settimana
+  */
   var friIsHoly =false;
-  var satIsHoly =true;
-  var sunIsHoly =true;
+  var satIsHoly = false;
+  var sunIsHoly = false;
 
   var pad = function (val) {
     val = "0" + val;
@@ -145,7 +156,26 @@ function isHoliday(date) {
   return  (day == 5 && friIsHoly) || (day == 6 && satIsHoly) || (day == 0 && sunIsHoly) || holidays.indexOf(ymd) > -1 || holidays.indexOf(md) > -1;
 }
 
+function isWeekEnd(date)
+{
+    var friIsHoly = false;
+    var satIsHoly = true;
+    var sunIsHoly = true;
 
+    var pad = function (val) {
+        val = "0" + val;
+        return val.substr(val.length - 2);
+    };
+
+    var holidays = "##";
+
+    var ymd = "#" + date.getFullYear() + "_" + pad(date.getMonth() + 1) + "_" + pad(date.getDate()) + "#";
+    var md = "#" + pad(date.getMonth() + 1) + "_" + pad(date.getDate()) + "#";
+    var day = date.getDay();
+
+    return (day == 5 && friIsHoly) || (day == 6 && satIsHoly) || (day == 0 && sunIsHoly) || holidays.indexOf(ymd) > -1 || holidays.indexOf(md) > -1;
+
+}
 
 var i18n = {
   YES:                 "Yes",

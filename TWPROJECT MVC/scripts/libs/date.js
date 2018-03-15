@@ -568,6 +568,10 @@ Date.prototype.isHoliday=function(){
   return isHoliday(this);
 };
 
+Date.prototype.isWeekEnd = function () {
+	return isWeekEnd(this);
+};
+
 Date.prototype.isToday=function(){
   return this.toInt()==new Date().toInt();  
 };
