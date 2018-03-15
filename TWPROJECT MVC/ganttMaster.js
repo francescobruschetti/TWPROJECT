@@ -951,11 +951,11 @@ GanttMaster.prototype.updateLinks = function (task) {
         } else {
             // calcolo il numero di giorni tra le due task che l'utente sta cercando di unire, in modo da mantenere la distanza.
             // OSS: "task" è il figlio e "sup" il padre
-            var millisec = task.start - sup.end;
-            lag = Math.floor(millisec / (24 * 60 * 60 * 1000));
+            /*var millisec = task.start - sup.end;
+            lag = Math.floor(millisec / (24 * 60 * 60 * 1000));*/
 
             this.links.push(new Link(sup, task, lag));
-            newDepsString = newDepsString + (newDepsString.length > 0 ? "," : "") + supStr; //+(lag==0?"":":"+durationToString(lag));
+            newDepsString = newDepsString + (newDepsString.length > 0 ? "," : "") + supStr; +(lag==0?"":":"+durationToString(lag));
         }
 
         if (todoOk)
