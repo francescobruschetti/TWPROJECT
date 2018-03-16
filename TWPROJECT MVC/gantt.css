@@ -271,7 +271,7 @@ body{
 
 
 .button span.teamworkIcon {
-  text-indent: 0px; /* original value: -10px */
+  text-indent: 0px; /* origninale: -10px */
 }
 
 
@@ -280,7 +280,7 @@ body{
 }
 
 #saveGanttButton {
-  margin-left:30px; /* original value: 25px */
+  margin-left:30px; /* origninale: 25px */
   padding: 5px 12px;
   margin-bottom: 0;
   vertical-align: middle;
@@ -311,7 +311,7 @@ body{
   border-right: 2px dotted #ddd;
 }
 
-/* colore di sfondo delle date (numero giorno) dei mesi */
+/* colore di sfondo delle date (numero giorno) dei giorni di "vacanza". Ho im a 1 l'opacità in modo da non vedere cosa c'è dietro l'elemento.*/
 .ganttHead2 th.holy{
   background-color: rgba(236, 195, 176, 1);
 }

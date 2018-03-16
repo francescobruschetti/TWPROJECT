@@ -23,11 +23,11 @@
 //----------------------------------positioning-----------------------------------------------
 jQuery.fn.centerOnScreen = function () {
   return this.each(function () {
-    var container = $(this);
-    //console.debug($(window).height(), container.outerHeight(),(($(window).height() - container.outerHeight()) / 2))
-    container.css("position", "fixed");
-    container.css("top", (($(window).height() - container.outerHeight()) / 2) + 'px');
-    container.css("left", (($(window).width() - container.outerWidth()) / 2) + 'px');
+	var container = $(this);
+	//console.debug($(window).height(), container.outerHeight(),(($(window).height() - container.outerHeight()) / 2))
+	container.css("position", "fixed");
+	container.css("top", (($(window).height() - container.outerHeight()) / 2) + 'px');
+	container.css("left", (($(window).width() - container.outerWidth()) / 2) + 'px');
   });
 };
 
@@ -165,62 +165,62 @@ $.buttonBar = {
   defaults: {},
 
   init: function(){
-    setTimeout(function(){
-      $.buttonBar.manageButtonBar();
-    },100);
+	setTimeout(function(){
+	  $.buttonBar.manageButtonBar();
+	},100);
 
-    $(window).on("scroll.ButtonBar",function(){
-      $.buttonBar.manageButtonBar();
-    });
-    $(window).on("resize.ButtonBar",function(){
-      $.buttonBar.manageButtonBar();
-    });
+	$(window).on("scroll.ButtonBar",function(){
+	  $.buttonBar.manageButtonBar();
+	});
+	$(window).on("resize.ButtonBar",function(){
+	  $.buttonBar.manageButtonBar();
+	});
   },
 
   manageButtonBar: function(anim) {
 
-    $(".buttonArea").not(".bbCloned").not(".notFix").each(function(){
-      var bb = this;
+	$(".buttonArea").not(".bbCloned").not(".notFix").each(function(){
+	  var bb = this;
 
-      //se usiamo questi si rompe la button bar flottante del save sulla issue list
-      //bb.originalHeigh=bb.originalHeigh ||  $(bb).height();
-      //bb.originalOffsetTop=bb.originalOffsetTop||$(bb).offset().top;
+	  //se usiamo questi si rompe la button bar flottante del save sulla issue list
+	  //bb.originalHeigh=bb.originalHeigh ||  $(bb).height();
+	  //bb.originalOffsetTop=bb.originalOffsetTop||$(bb).offset().top;
 
-      bb.originalHeigh= $(bb).height();
-      bb.originalOffsetTop=$(bb).offset().top;
+	  bb.originalHeigh= $(bb).height();
+	  bb.originalOffsetTop=$(bb).offset().top;
 
-      bb.isOut = $(window).scrollTop() + $(window).height() - bb.originalHeigh < bb.originalOffsetTop;
+	  bb.isOut = $(window).scrollTop() + $(window).height() - bb.originalHeigh < bb.originalOffsetTop;
 
-      if (bb.bbHolder)
-        bb.bbHolder.css({width: $(bb).outerWidth(),left:$(bb).offset().left});
+	  if (bb.bbHolder)
+		bb.bbHolder.css({width: $(bb).outerWidth(),left:$(bb).offset().left});
 
-      if (bb.isOut && !bb.isCloned){
-        if (bb.bbHolder)
-          bb.bbHolder.remove();
-        bb.isCloned = true;
-        bb.bbHolder = $(bb).clone().addClass("bbCloned clone bottom").css({width: $(bb).outerWidth(), marginTop:0,left:$(bb).offset().left});
-        bb.bbHolder.hide();
-        bb.bbHolder.css({position:"fixed", bottom:0, left:$(bb).offset().left});
-        $(bb).after(bb.bbHolder);
-        bb.bbHolder.show();
-        $(bb).css("visibility","hidden");
+	  if (bb.isOut && !bb.isCloned){
+		if (bb.bbHolder)
+		  bb.bbHolder.remove();
+		bb.isCloned = true;
+		bb.bbHolder = $(bb).clone().addClass("bbCloned clone bottom").css({width: $(bb).outerWidth(), marginTop:0,left:$(bb).offset().left});
+		bb.bbHolder.hide();
+		bb.bbHolder.css({position:"fixed", bottom:0, left:$(bb).offset().left});
+		$(bb).after(bb.bbHolder);
+		bb.bbHolder.show();
+		$(bb).css("visibility","hidden");
 
-      } else if (!bb.isOut && bb.isCloned) {
-      //} else {
-        bb.isCloned = false;
-        bb.bbHolder.remove();
-        $(bb).css("visibility","visible");
-      }
-    });
+	  } else if (!bb.isOut && bb.isCloned) {
+	  //} else {
+		bb.isCloned = false;
+		bb.bbHolder.remove();
+		$(bb).css("visibility","visible");
+	  }
+	});
   },
 
   refreshButtonBar: function() {
-    $(".bbCloned").remove();
-    $(".buttonArea").not(".bbCloned").each(function(){
-      var bb = this;
-      bb.isCloned = false;
-    });
+	$(".bbCloned").remove();
+	$(".buttonArea").not(".bbCloned").each(function(){
+	  var bb = this;
+	  bb.isCloned = false;
+	});
 
-    $.buttonBar.manageButtonBar(false);
+	$.buttonBar.manageButtonBar(false);
   }
 };

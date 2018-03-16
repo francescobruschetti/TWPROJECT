@@ -408,7 +408,6 @@ function incrementDateByUnits(date,duration){
 
 
 function computeStart(start) {
-	console.log("computeStart: "+ start + " : " + computeStartDate(start).getTime());
   return computeStartDate(start).getTime();
 }
 

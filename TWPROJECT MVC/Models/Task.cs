@@ -5,6 +5,7 @@ using System.Web;
 
 namespace TWPROJECT_MVC.Models
 {
+    // oggetto task con gli attributi necessari per la visualizzazione/gestione
     public class Task
     {
         public int id { get; set; }

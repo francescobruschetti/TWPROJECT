@@ -5,6 +5,7 @@ using System.Web;
 
 namespace TWPROJECT_MVC.Models
 {
+    // classe per la creazione di dati di prova da aggiungere al JSON
     public class MoreInfo
     {
         public int codice { get; set; }

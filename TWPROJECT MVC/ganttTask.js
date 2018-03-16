@@ -31,6 +31,9 @@
 var askConfermation = true;
 // quando modifico la lunghezza di un nodo foglia, non mi serve chiedere all'utente cosa fare, perché l'albero sopra il nodo, non viene influenzato. Quindi lascio fare l'operazione.
 var isLeaf = false;
+
+// oggetto in cui salvo lo stato delle task, quando l'utente effettua delle
+//var debugObject;
 function TaskFactory() {
 
   /**
@@ -120,10 +123,15 @@ Task.prototype.setPeriod = function (start, end) {
   //console.debug("setPeriod ",this.code,this.name,new Date(start), new Date(end));
     //var profilerSetPer = new Profiler("gt_setPeriodJS");
 
-    var x = this;
+    // ripristino il valore di default, in modo da poter chiedere all'utente come comportarmi quando sta modificando la lunghezza di un nodo, e questo va a sovrapporsi ad un altro
+    // prima di propagare dei comandi a eventuali nodi, memorizzo se il nodo attuale ne ha o meno(quindi è foglia).
+    // con il seguente controllo, aviterei il problema del popup(prompt) che chiede più volte cosa fare, se la task figlia è "sopra"(come riga nella tabella).
+    // OSS: lasciandolo così, nel caso in cui modifico l'inizio o la fine di una task, mi viene chiesto se voglio confermarlo. (avviene nelle subtask e in quelle radice)
+    if (isLeaf) // && askConfermation)
+        askConfermation = true;
+    else
+        askConfermation = false;
 
-    // ripristino il valore di default, in modo da poter chiedere all'utente come comportarmi quando sta modificando la lunghezza di un nodo radice, e questo va a sovrapporsi a uno o più figli
-    askConfermation = true;
 
   if (start instanceof Date) {
     start = start.getTime();
@@ -284,6 +292,7 @@ Task.prototype.moveTo = function (start, ignoreMilestones, propagateToInferiors,
   //console.debug("moveTo ",this.name,new Date(start),this.duration,ignoreMilestones);
   //var profiler = new Profiler("gt_task_moveTo");
 
+
   if (start instanceof Date) {
     start = start.getTime();
   }
@@ -344,7 +353,8 @@ Task.prototype.moveTo = function (start, ignoreMilestones, propagateToInferiors,
     var children = this.getChildren();
     for (var i = 0; i < children.length; i++) {
       var ch = children[i];
-      var chStart=incrementDateByUnits(new Date(ch.start),panDeltaInWM);
+      var chStart = incrementDateByUnits(new Date(ch.start), panDeltaInWM);
+      //askConfermation = false;
       ch.moveTo(chStart,false,false, originalPeriod);
       }
 
@@ -422,9 +432,8 @@ Task.prototype.propagateToInferiors = function (end, origanalPeriod) {
 
 //<%---------- COMPUTE START BY SUPERIORS ---------------------- --%>
 // originale: computeStartBySuperiors = function (proposedStart) {
-// mi serve la var originalPeriod in modo da ripristinare le date della task padre,
-// se l'utente, nel caso in cui la task padre abbia una data di fine maggiore di quella iniziale del figlio,
-// decide di annullare l'operazione
+// la var originalPeriod viene utilizzata in modo da poter ripristinare lo stato(posizione) della task,
+// quando la data di fine del padre supera quella di inizio di un figlio, e l'utente decida di non proseguire.
 Task.prototype.computeStartBySuperiors = function (proposedStart, originalPeriod) {
 
   //if depends -> start is set to max end + lag of superior
@@ -454,6 +463,7 @@ Task.prototype.computeStartBySuperiors = function (proposedStart, originalPeriod
 
             supEnd = Math.max(supEnd, incrementDateByUnits(new Date(link.from.end), link.lag));
             
+            //debugObject.push({ "padre": sups[i], "figlio": this, "askConfermation": askConfermation, "rispPrompt": rispPrompt, "codice": "if (retLag[0] != false || isLeaf)"});
         }
         else {
             
@@ -474,6 +484,8 @@ Task.prototype.computeStartBySuperiors = function (proposedStart, originalPeriod
                 parent.from.duration = originalPeriod.duration;
 
                 supEnd = Math.max(supEnd, incrementDateByUnits(new Date(sups[i].from.end), sups[i].lag));
+
+            //    debugObject.push({ "padre": sups[i], "figlio": this, "askConfermation": askConfermation, "rispPrompt": rispPrompt, "codice": "if (rispPrompt == false)" });
             }
             else {
                 // procedo comunque con la modifica della relazione
@@ -482,6 +494,8 @@ Task.prototype.computeStartBySuperiors = function (proposedStart, originalPeriod
                 var link = sups[i];
 
                 supEnd = Math.max(supEnd, incrementDateByUnits(new Date(link.from.end), link.lag));
+
+             //   debugObject.push({ "padre": sups[i], "figlio": this, "askConfermation": askConfermation, "rispPrompt": rispPrompt, "codice": "if (rispPrompt == false)else{....}" });
             }
         }
         

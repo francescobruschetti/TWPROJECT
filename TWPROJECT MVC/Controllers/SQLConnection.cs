@@ -16,13 +16,12 @@ namespace TWPROJECT_MVC.Controllers
 
         public SQLConnection()
         {
+            // creo la connessione con il database. Uso la connection-string(definita in Web.config) chiamata "TWPROJECT"
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["TWPROJECT"].ToString());
-            //Get_Connection();
         }
 
 
-        // codice di prova, per provare a collegarmi al db
-        // functions that establish the connection 
+        // codice di PROVA, per provare a collegarmi al db. NON VA UTILIZZATA
         private void Get_Connection()
         {
 

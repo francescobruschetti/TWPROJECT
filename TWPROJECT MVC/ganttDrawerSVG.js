@@ -232,12 +232,12 @@ Ganttalendar.prototype.drawTask = function (task) {
   if (self.showCriticalPath && task.isCritical)
     taskBox.addClass("critical");
 
-    // if originale è: if (this.master.permissions.canWrite || task.canWrite): in questo caso, se la task aveva i permessi di scrittura, anche un utente senza permessi, poteva applicare modifiche
-    // lasciandolo con l' AND (&&), per effettuare una modifica, l'utente deve avere i permessi, e la task deve poter essere in scrittura
-    // ??? poiché ogni task ha il proprio stato di "canWrite", certe task potrebbero non essere mai modificabili (se task.canWrie è falso, neanche l'utente con il permesso può modificare). Non so se questo può servire.
+    // originale: if (this.master.permissions.canWrite || task.canWrite): in questo caso, se la task aveva i permessi di scrittura, anche un utente senza permessi, poteva applicare modifiche. 
+    // lasciandolo con l' AND (&&), per effettuare una modifica, l'utente deve avere i permessi, e la task deve essere in scrittura. 
+    // OSS: poiché ogni task ha il proprio stato di "canWrite", certe task potrebbero non essere mai modificabili (se task.canWrie è falso, neanche l'utente con il permesso può modificare). Non so se questo può servire.
   if (this.master.permissions.canWrite && task.canWrite) {
 
-    //bind all events on taskBox
+    // gestione degli eventi sulle task // originale: bind all events on taskBox
     taskBox
       .click(function (e) { // manages selection
         e.stopPropagation();// to avoid body remove focused
@@ -252,10 +252,10 @@ Ganttalendar.prototype.drawTask = function (task) {
           $(".ganttSVGBox .focused").removeClass("focused");
         })
 
-      }).dblclick(function () {
+      }).dblclick(function () { // gestione DOPPIO CLICK sulla task
         if (self.master.permissions.canSeePopEdit)
           self.master.editor.openFullEditor(task,false);
-      }).mouseenter(function () {
+      }).mouseenter(function () { // gestione del PASSAGGIO DEL MOUSE sulla task
         //bring to top
         var el = $(this);
         if (!self.linkOnProgress) {
@@ -264,15 +264,15 @@ Ganttalendar.prototype.drawTask = function (task) {
         } else {
           el.addClass("linkOver");
         }
-      }).mouseleave(function () {
+      }).mouseleave(function () { // evento che gestisce quando il MOUSE SI SPOSTA dalla task
         var el = $(this);
         el.removeClass("linkOver").find("[class*=linkHandleSVG]").oneTime(500,"hideLink",function(){$(this).hide()});
-      }).mouseup(function (e) {
+      }).mouseup(function (e) { 
         $(":focus").blur(); // in order to save grid field when moving task
       }).mousedown(function () {
         var task = self.master.getTask($(this).attr("taskid"));
         task.rowElement.click();
-      }).dragExtedSVG($(self.svg.root()), {
+      }).dragExtedSVG($(self.svg.root()), { // gestione del DRAG per ESTENDERE UNA TASK
         canResize:  this.master.permissions.canWrite || task.canWrite,
         canDrag:    !task.depends && (this.master.permissions.canWrite || task.canWrite),
         resizeZoneWidth:self.resizeZoneWidth,
@@ -280,7 +280,6 @@ Ganttalendar.prototype.drawTask = function (task) {
           $(".ganttSVGBox .focused").removeClass("focused");
         },
         drag: function (e) {
-            console.log("DRAG:" + "[from=" + task.id + "],[to=" + task.id + "]");
           $("[from=" + task.id + "],[to=" + task.id + "]").trigger("update");
         },
         drop:       function (e) {
@@ -333,7 +332,7 @@ Ganttalendar.prototype.drawTask = function (task) {
         }
       });
 
-    //binding for creating link
+    // originale: binding for creating link
     taskBox.find("[class*=linkHandleSVG]").mousedown(function (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -371,7 +370,6 @@ Ganttalendar.prototype.drawTask = function (task) {
 
         $(self.svg.root()).unbind("mousemove.linkSVG");
         var targetBox = $(e.target).closest(".taskBoxSVG");
-        //console.debug("create link from " + taskBox.attr("taskid") + " to " + targetBox.attr("taskid"));
 
         if (targetBox && targetBox.attr("taskid") != taskBox.attr("taskid")) {
           var taskTo;
@@ -394,7 +392,9 @@ Ganttalendar.prototype.drawTask = function (task) {
       })
     });
   }
-  //ask for redraw link
+
+  // originale: ask for redraw link
+  // dopo aver apportato modifiche hai collegamenti tra task, chiedo di ridisegnarli, in modo che rispecchino i nuovi dati
   self.redrawLinks();
 
   //prof.stop();
@@ -403,14 +403,12 @@ Ganttalendar.prototype.drawTask = function (task) {
     function _createTaskSVG(task) {
     var svg = self.svg;
 
-    console.log("before x: " + task.x + " y: " + task.y);
         var dimensions = {
             x     : Math.round((task.start - self.startMillis) * self.fx),
             y     : task.rowElement.position().top + task.rowElement.offsetParent().scrollTop() + self.taskVertOffset,
             width : Math.max(Math.round((task.end - task.start) * self.fx), 1),
             height: (self.master.showBaselines ? self.taskHeight / 1.3 : self.taskHeight)
         };
-    console.log("after x: " + dimensions.x + " y: " + dimensions.y);
     var taskSvg = svg.svg(self.tasksGroup, dimensions.x, dimensions.y, dimensions.width, dimensions.height, {class:"taskBox taskBoxSVG taskStatusSVG", status:task.status, taskid:task.id,fill:task.color||"#eee" });
 
     //svg.title(taskSvg, task.name);
@@ -420,7 +418,8 @@ Ganttalendar.prototype.drawTask = function (task) {
     if (task.hasExternalDep)
       svg.rect(taskSvg, 0, 0, "100%", "100%", {fill:"url(#extDep)"});
 
-    //progress
+    // originale: progess
+    // gestione delle task che hanno uno stato di avanzamento maggiore di 0
     if (task.progress > 0) {
       var progress = svg.rect(taskSvg, 0, "20%", (task.progress > 100 ? 100 : task.progress) + "%", "60%", {rx:"2", ry:"2",fill:"rgba(0,0,0,.4)"});
       if (dimensions.width > 50) {
@@ -433,7 +432,11 @@ Ganttalendar.prototype.drawTask = function (task) {
       }
     }
 
-        if (task.isParent())
+    /*
+     * gestione dello stile nel caso un cui la task abbia uno dei seguenti attributi
+     */
+
+    if (task.isParent())
       svg.rect(taskSvg, 0, 0, "100%", 3, {fill:"#000"});
 
     if (task.startIsMilestone) {
@@ -445,6 +448,7 @@ Ganttalendar.prototype.drawTask = function (task) {
     }
 
     //task label
+    // stile della "label"(etichetta) visualizzata vicino alle task, per rappresentarne i dettagli(in questo caso si visualizza il nome dell'attività)
     svg.text(taskSvg, "100%", 18, task.name, {class:"taskLabelSVG", transform:"translate(20,-5)"});
 
     //link tool
@@ -492,7 +496,6 @@ Ganttalendar.prototype.drawTask = function (task) {
 
 
         //progress
-
         if (baseline.progress > 0) {
             var progress = svg.rect(taskSvg, 0, "20%", (baseline.progress > 100 ? 100 : baseline.progress) + "%", "60%", {rx: "2", ry: "2", fill: "rgba(0,0,0,.4)"});
             /*if (dimensions.width > 50) {
@@ -526,6 +529,7 @@ Ganttalendar.prototype.addTask = function (task) {
 
 //<%-------------------------------------- GANT DRAW LINK SVG ELEMENT --------------------------------------%>
 //'from' and 'to' are tasks already drawn
+// si occupa di creare l'oggetto grafico che collega le task "from" e "to"
 Ganttalendar.prototype.drawLink = function (from, to, type) {
   //console.debug("drawLink")
   var self = this;
@@ -670,6 +674,7 @@ Ganttalendar.prototype.drawLink = function (from, to, type) {
 
 };
 
+// funzione che si occupa di ridisegnare i collegamenti esistenti, in modo che rispecchino eventuali modifiche dei dati
 Ganttalendar.prototype.redrawLinks = function () {
   //console.debug("redrawLinks ");
   var self = this;
@@ -710,7 +715,7 @@ Ganttalendar.prototype.reset = function () {
   //prof.stop()
 };
 
-
+// funzione che si occupa di ridisegnare le task esistenti, in modo che rispecchino eventuali modifiche dei dati
 Ganttalendar.prototype.redrawTasks = function (drawAll) {
     //console.debug("redrawTasks ");
   var self=this;
@@ -724,13 +729,16 @@ Ganttalendar.prototype.redrawTasks = function (drawAll) {
   var endRowAdd =self.master.firstScreenLine+self.master.numOfVisibleRows+self.master.rowBufferSize;
 
     //  $("#linksGroup,#tasksGroup").empty();
+
   // prima di ridisegnare le task, rimuove tutte quelle presenti nel grafico, in modo da evitare di averne di doppie
   $("#tasksGroup").empty();
   var gridGroup=$("#gridGroup").empty().get(0);
 
   //add missing ones
   var row=0;
-  self.master.firstVisibleTaskIndex=-1;
+  self.master.firstVisibleTaskIndex = -1;
+
+  // scorro la lista di task e le disegno
   for (var i=0;i<self.master.tasks.length;i++){
     var task=self.master.tasks[i];
     if (collapsedDescendant.indexOf(task)>=0){
@@ -876,11 +884,13 @@ Ganttalendar.prototype.getCenterMillis= function () {
   return parseInt((this.element.parent().scrollLeft()+this.element.parent().width()/2)/this.fx+this.startMillis);
 };
 
+// *** fornita una data in millisecondi, questa funzione sposta la visuale del gantt sul valore specificato
 Ganttalendar.prototype.goToMillis= function (millis) {
   var x = Math.round(((millis) - this.startMillis) * this.fx) -this.element.parent().width()/2;
   this.element.parent().scrollLeft(x);
 };
 
+// ***  funzione che si occupa di individuare la data odierna e la trasformazione in millisecondi
 Ganttalendar.prototype.centerOnToday = function () {
   this.goToMillis(new Date().getTime());
 };
@@ -920,7 +930,6 @@ $.fn.dragExtedSVG = function (svg, opt) {
       el.addClass("deSVGdrag");
 
     // funzione chiamata quando si modifica la durata di una task
-    console.log("RESIZE: " + options.canResize);
     if (options.canResize || options.canDrag) {
       el.bind("mousedown.deSVG",function (e) {
           //console.debug("mousedown.deSVG");

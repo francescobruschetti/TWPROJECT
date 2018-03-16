@@ -5,15 +5,15 @@ using System.Web;
 
 namespace TWPROJECT_MVC.Models
 {
+    // oggetto in cui memorizzo tutti i dati necessari per il funzionamento della pagina Gantt.cshtml
     public class Data
     {
         public static int selectedRow = 2;
         public static List<string> deletedTaskIds = new List<string>();
-        //public static bool canWrite = false;
-        //public static bool canDelete = false;
-        //public static bool canWriteOnParent = false;
-        //public static bool canAdd = false;
-
+        public bool canWrite { get; set; }
+        public bool canDelete { get; set; }
+        public bool canWriteOnParent { get; set; }
+        public bool canAdd { get; set; }
 
         public List<Task> tasks { get; set; }
         public List<Resource> resources { get; set; }
@@ -21,11 +21,5 @@ namespace TWPROJECT_MVC.Models
 
         // dati di prova
         public MoreInfo moreInfo { get; set; }
-        public bool canWrite { get; set; }
-        public bool canDelete { get; set; }
-        public bool canWriteOnParent { get; set; }
-        public bool canAdd { get; set; }
-
-
     }
 }

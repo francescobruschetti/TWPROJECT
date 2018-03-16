@@ -33,64 +33,64 @@ function dateToRelative(localTime){
   var yea=31557600000;
 
   if (diff<-yea*2)
-    ret ="in ## years".replace("##",(-diff/yea).toFixed(0));
+    ret ="negli anni ##".replace("##",(-diff/yea).toFixed(0));
 
   else if (diff<-mon*9)
-    ret ="in ## months".replace("##",(-diff/mon).toFixed(0));
+    ret ="nei mesi ##".replace("##",(-diff/mon).toFixed(0));
 
   else if (diff<-wee*5)
-    ret ="in ## weeks".replace("##",(-diff/wee).toFixed(0));
+    ret ="nelle settimane ##".replace("##",(-diff/wee).toFixed(0));
 
   else if (diff<-day*2)
-    ret ="in ## days".replace("##",(-diff/day).toFixed(0));
+    ret ="nei giorni ##".replace("##",(-diff/day).toFixed(0));
 
   else if (diff<-hour)
-    ret ="in ## hours".replace("##",(-diff/hour).toFixed(0));
+    ret ="nelle ore ##".replace("##",(-diff/hour).toFixed(0));
 
   else if (diff<-min*35)
-    ret ="in about one hour";
+    ret ="in circa un ore";
 
   else if (diff<-min*25)
-    ret ="in about half hour";
+    ret ="in circa mezz'ora";
 
   else if (diff<-min*10)
-    ret ="in some minutes";
+    ret ="in qualche minuto";
 
   else if (diff<-min*2)
-    ret ="in few minutes";
+    ret ="in un paio di minuti";
 
   else if (diff<=min)
-    ret ="just now";
+    ret ="adesso";
 
   else if (diff<=min*5)
-    ret ="few minutes ago";
+    ret ="un paio di minuto fa";
 
   else if (diff<=min*15)
-    ret ="some minutes ago";
+    ret ="qualche minuto fa";
 
   else if (diff<=min*35)
-    ret ="about half hour ago";
+    ret ="circa mezz'ora fa";
 
   else if (diff<=min*75)
-    ret ="about an hour ago";
+    ret ="circa un'ora fa";
 
   else if (diff<=hour*5)
-    ret ="few hours ago";
+    ret ="un paio di ore fa";
 
   else if (diff<=hour*24)
-    ret ="## hours ago".replace("##",(diff/hour).toFixed(0));
+    ret ="## ore fa".replace("##",(diff/hour).toFixed(0));
 
   else if (diff<=day*7)
-    ret ="## days ago".replace("##",(diff/day).toFixed(0));
+      ret = "## giorni fa".replace("##", (diff / day).toFixed(0));
 
   else if (diff<=wee*5)
-    ret ="## weeks ago".replace("##",(diff/wee).toFixed(0));
+      ret = "## settimane fa".replace("##", (diff / wee).toFixed(0));
 
   else if (diff<=mon*12)
-    ret ="## months ago".replace("##",(diff/mon).toFixed(0));
+      ret = "## mesi fa".replace("##", (diff / mon).toFixed(0));
 
   else
-    ret ="## years ago".replace("##",(diff/yea).toFixed(0));
+      ret = "## anni fa".replace("##", (diff / yea).toFixed(0));
 
   return ret;
 }
@@ -123,7 +123,7 @@ Number.currencyFormat = "###,##0.00";
 
 
 // modificati per rispecchiare i valori dei dati friIsHoly, satIsHoly, SunIsHoly
-// valori originali
+// originali
 // var millisInWorkingDay =28800000;
 // var workingDaysPerWeek =5;
 
@@ -178,46 +178,46 @@ function isWeekEnd(date)
 }
 
 var i18n = {
-  YES:                 "Yes",
+  YES:                 "Si",
   NO:                  "No",
-  FLD_CONFIRM_DELETE:  "confirm the deletion?",
-  INVALID_DATA:        "The data inserted are invalid for the field format.",
-  ERROR_ON_FIELD:      "Error on field",
-  OUT_OF_BOUDARIES:      "Out of field admitted values:",
-  CLOSE_ALL_CONTAINERS:"close all?",
-  DO_YOU_CONFIRM:      "Do you confirm?",
-  ERR_FIELD_MAX_SIZE_EXCEEDED:      "Field max size exceeded",
-  WEEK_SHORT:      "W.",
+  FLD_CONFIRM_DELETE:  "conferma eliminazione?",
+  INVALID_DATA:        "La data inserita non rispetta il formato del campo.", //"The data inserted are invalid for the field format.",
+  ERROR_ON_FIELD:      "Errore nel campo", //"Error on field",
+  OUT_OF_BOUDARIES:     "Fuori dal campo di valori consentiti:", //"Out of field admitted values:",
+  CLOSE_ALL_CONTAINERS: "Chiudi tutto?", //"close all?",
+  DO_YOU_CONFIRM:       "Confermi?", //"Do you confirm?",
+  ERR_FIELD_MAX_SIZE_EXCEEDED:      "Raggiunta la dimensione massima del campo", //"Field max size exceeded",
+  WEEK_SHORT:  "S.", //"W.",
 
-  FILE_TYPE_NOT_ALLOWED:"File type not allowed.",
-  FILE_UPLOAD_COMPLETED:"File upload completed.",
-  UPLOAD_MAX_SIZE_EXCEEDED:"Max file size exceeded",
-  ERROR_UPLOADING:"Error uploading",
-  UPLOAD_ABORTED:"Upload aborted",
-  DROP_HERE:"Drop files here",
+  FILE_TYPE_NOT_ALLOWED: "Tipo di file non supportato.", //"File type not allowed.",
+  FILE_UPLOAD_COMPLETED: "Caricamento file completato.", //"File upload completed.",
+  UPLOAD_MAX_SIZE_EXCEEDED: "Superata la dimensione massima del file", //"Max file size exceeded",
+  ERROR_UPLOADING: "Errore durante il caricamento", //"Error uploading",
+  UPLOAD_ABORTED: "Caricamento annullato", //"Upload aborted",
+  DROP_HERE: "Rilasci i file qui", //"Drop files here",
 
-  FORM_IS_CHANGED:     "You have some unsaved data on the page!",
+  FORM_IS_CHANGED: "Hai dei dati non salvati nella pagina!", //"You have some unsaved data on the page!",
 
   PIN_THIS_MENU: "PIN_THIS_MENU",
   UNPIN_THIS_MENU: "UNPIN_THIS_MENU",
   OPEN_THIS_MENU: "OPEN_THIS_MENU",
   CLOSE_THIS_MENU: "CLOSE_THIS_MENU",
-  PROCEED: "Proceed?",
+  PROCEED: "Procedere?", //"Proceed?",
 
-  PREV: "Previous",
-  NEXT: "Next",
-  HINT_SKIP: "Got it, close this hint.",
+  PREV: "Precedente", //"Previous",
+  NEXT: "Successivo", //"Next",
+  HINT_SKIP: "Ho capito, chiudi il suggerimento.", //Got it, close this hint.",
 
-  WANT_TO_SAVE_FILTER: "save this filter",
-  NEW_FILTER_NAME: "name of the new filter",
-  SAVE: "Save",
-  DELETE: "Delete",
-  HINT_SKIP: "Got it, close this hint.",
+  WANT_TO_SAVE_FILTER: "salva questo filtro", //"save this filter",
+  NEW_FILTER_NAME: "nome del nuovo filtro", //"name of the new filter",
+  SAVE: "salva", //"Save",
+  DELETE: "elimina", //"Delete",
+  HINT_SKIP: "Ho capito, chiudi il suggerimento.", //"Got it, close this hint.",
 
-  COMBO_NO_VALUES: "no values available...?",
+  COMBO_NO_VALUES: "nessun valore disponibile...?", // "no values available...?",
 
-  FILTER_UPDATED:"Filter updated.",
-  FILTER_SAVED:"Filter correctly saved."
+  FILTER_UPDATED: "Filtro aggiornato.", //"Filter updated.",
+  FILTER_SAVED: "Filtro salvato correttamente.", //"Filter correctly saved."
 
 };
 

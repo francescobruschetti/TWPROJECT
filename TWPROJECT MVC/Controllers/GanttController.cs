@@ -21,7 +21,8 @@ namespace TWPROJECT_MVC.Controllers
         public static Data dbData;
 
         // permessi (di prova), necessari per specificare cosa può/non può fare l'utente
-        private bool puoScrivere = true;
+        // TODO: andranno letti dal db
+        private bool puoScrivere = false;
         private bool puoAggiungere = false;
         private bool puoEliminare = false;
         private bool puoScrivereOnParent = false;
@@ -239,8 +240,6 @@ namespace TWPROJECT_MVC.Controllers
 
             return roles;
         }
-
-
 
         // creo dati di prova
         private MoreInfo createMoreInfoData(int i)
