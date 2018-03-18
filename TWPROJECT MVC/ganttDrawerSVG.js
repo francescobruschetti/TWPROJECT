@@ -886,11 +886,11 @@ Ganttalendar.prototype.getCenterMillis= function () {
 
 // *** fornita una data in millisecondi, questa funzione sposta la visuale del gantt sul valore specificato
 Ganttalendar.prototype.goToMillis= function (millis) {
-  var x = Math.round(((millis) - this.startMillis) * this.fx) -this.element.parent().width()/2;
-  this.element.parent().scrollLeft(x);
+  var x = Math.round(((millis) - this.startMillis) * this.fx) - this.element.parent().width() / 2;
+ this.element.parent().scrollLeft(0); // 0: vuol dire che non shifto
 };
 
-// ***  funzione che si occupa di individuare la data odierna e la trasformazione in millisecondi
+// funzione che si occupa di individuare la data odierna e la trasformazione in millisecondi
 Ganttalendar.prototype.centerOnToday = function () {
   this.goToMillis(new Date().getTime());
 };

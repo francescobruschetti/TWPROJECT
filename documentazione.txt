@@ -1,0 +1,59 @@
+TWPROJECT (DOCUMENTAZIONE):
+
+Legenda simboli:
+ - r: x:y codice dalla riga x alla y comprese
+
+FILE: 
+
+- Data.cs
+  - classe che definisce l'oggetto utilizzato dalla pagina Gantt, per rappresentare i dati nel gantt
+
+- date.js
+  - tradotti i nomi dei giorni, mesi (r: 18:24)
+  - cambiato l'indice di inizio settimana (r: 30)
+  - cambiato il formato di default delle date visualizzate (r: 33)
+
+- Gantt.cshtml
+  - contiene il codice HTML con cui creare la struttura della pagina. Prende i dati ricevuti dal controller GanttController/Gantt, ne crea un json e lo utilizza per gestire le funzioni del sito.
+  - commentata la maggior parte del codice.
+  
+- gantt.css
+  - modificato lo stile(aspetto) di alcuni componenti(r: 274 e 283)
+  
+- GanttController/Gantt
+  - controller che fa da intermediario nel modello MVC
+  - viene chiamato quando si fa la richiesta di un URL per una pagina.
+  - Inoltre, chiama la classe SQLConnection per stabilire una connessione con il db, e per eseguire delle query sui dati
+
+- ganttDrawerSVG
+  - fornisce dei metodi per la rappresentazione degli elementi all'interno del gantt
+  es. creazione delle frecce di collegamento task, della barra di avanzamento delle task
+  
+- ganttGridEditor
+  - si occupa della gestione "grafica" della tabella dei dati. Quindi permette di creare le righe della tabella e di popolarle
+  
+- ganttMaster
+  - classe che si occupa della gestione del sito. es. crea le task per il gantt
+
+- ganttTask
+  - classe che si occupa di fornire le funzioni per la manipolazione delle task. I bottoni presenti nel menu sopra il gantt, utilizzano queste funzioni per completare le operazioni richieste
+  
+- i18nJs.js
+  - contiene il nome dei giorni e dei mesi
+  - contiene il testo di alcuni dei messaggi visualizzati nella pagina
+  - contiene la definizione dei giorni "week-end" e "vacanza"(holiday)
+
+- Resource.cs 
+  - classe dell'oggetti "Risorsa"  
+  
+- Role.cs
+  - definizione dell' oggetto ROLE (Ad una task posso associare una persona. Questa persona ha un "ruolo")
+
+- SQLConnection
+  - classe che si occupa di instaurare una connessione con il database specificato
+  
+- Task.cs
+  - oggetto task con gli attributi necessari per la gestione 
+  
+- web.config:
+  - ho aggiunto il codice per definire la stringa di connessione, da usare per collegarsi al db. r: 14:17

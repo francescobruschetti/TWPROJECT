@@ -30,6 +30,7 @@ function GridEditor(master) {
   this.gridified = $.gridify(editorTabel);
   this.element = this.gridified.find(".gdfTable").eq(1);
 
+    // ??? forse da qui si campia il periodo mostrato nel gantt 
   this.minAllowedDate=new Date(new Date().getTime()-3600000*24*365*20).format();
   this.maxAllowedDate=new Date(new Date().getTime()+3600000*24*365*30).format();
 }
@@ -85,12 +86,10 @@ GridEditor.prototype.fillEmptyLines = function () {
   }
 };
 
-
+// fnzione che aggiunge le task all' interno della pagina
 GridEditor.prototype.addTask = function (task, row, hideIfParentCollapsed) {
   //console.debug("GridEditor.addTask",task,row);
   //var prof = new Profiler("ganttGridEditor.addTask");
-
-  // alert("ADD TASK");
 
   //remove extisting row
   this.element.find("#tid_" + task.id).remove();
@@ -165,7 +164,7 @@ GridEditor.prototype.refreshTaskRow = function (task) {
   row.find("[name=code]").val(task.code);
   row.find("[status]").attr("status", task.status);
 
-    // le seguenti righe: row.find("....") originali hanno: .prop("readonly", .... );
+    // orginale: le seguenti righe: row.find("....") nella versione originale, hanno: .prop("readonly", .... ); al posto di "disabled"
   row.find("[name=duration]").val(durationToString(task.duration)).prop("disabled",!canWrite || task.isParent() && task.master.shrinkParent);
   row.find("[name=progress]").val(task.progress).prop("disabled", !canWrite || task.progressByWorklog == true);
   row.find("[name=startIsMilestone]").prop("checked", task.startIsMilestone);
@@ -241,7 +240,7 @@ GridEditor.prototype.bindRowEvents = function (task, taskRow) {
 
   } else { //cannot write: disable input
       // originale: taskRow.find("input").prop("readonly", true);
-      // sostituendo readonly con disable, l'oggetto resta non modificabile, ma non ne cambia lo stile
+      // sostituendo readonly con disable, l'oggetto resta non modificabile, ma non ne cambia lo stile. Con readonly, passava da nero a grigio chiaro
     taskRow.find("input").prop("disabled", true);
     taskRow.find("input:checkbox,select").prop("disabled", true);
   }
@@ -303,7 +302,7 @@ GridEditor.prototype.bindRowInputEvents = function (task, taskRow) {
       var inp = $(this);
       if (inp.isValueChanged()) {
         if (!Date.isValid(inp.val())) {
-          //----alert(GanttMaster.messages["INVALID_DATE_FORMAT"]);
+          //alert(GanttMaster.messages["INVALID_DATE_FORMAT"]);
           inp.val(inp.getOldValue());
 
         } else {
@@ -386,8 +385,8 @@ GridEditor.prototype.bindRowInputEvents = function (task, taskRow) {
           }
 
           // AGGIORNAMENTO TIPO ATTIVITA
-          // commentato per evitare che venga cambiato il tipo della task, quando questa viene collegata ad un altro
-          /*
+          // commentato per evitare che venga cambiato il tipo della task, quando questa viene collegata ad una altra, diventandone quindi "figlia"
+          /* originale
           if (oneFailed){
             task.changeStatus("STATUS_FAILED")
           } else if (oneUndefined){
@@ -523,7 +522,7 @@ GridEditor.prototype.bindRowInputEvents = function (task, taskRow) {
 
 };
 
-// TASK EDITOR
+// TASK EDITOR POPUP
 GridEditor.prototype.openFullEditor = function (task, editOnlyAssig) {
   var self = this;
 
@@ -554,7 +553,7 @@ GridEditor.prototype.openFullEditor = function (task, editOnlyAssig) {
     });
   }
 
-
+  // compilo i campi del popup, inserendo i valori della task
   taskEditor.find("#name").val(task.name);
   taskEditor.find("#description").val(task.description);
   taskEditor.find("#code").val(task.code);
@@ -577,7 +576,7 @@ GridEditor.prototype.openFullEditor = function (task, editOnlyAssig) {
   startDate.val(new Date(task.start).format());
 
     //start is readonly in case of deps
-    // codice originale: if (task.depends || !(this.master.permissions.canWrite ||task.canWrite)) {
+    // originale: if (task.depends || !(this.master.permissions.canWrite ||task.canWrite)) {
   if (task.depends || !(this.master.permissions.canWrite && task.canWrite)) {
       // originale: startDate.attr("readonly", "true");
     startDate.attr("disabled", "true");
@@ -600,7 +599,7 @@ GridEditor.prototype.openFullEditor = function (task, editOnlyAssig) {
 
   taskEditor.find(":input").updateOldValue();
 
-    // codice originale: if (!(self.master.permissions.canWrite || task.canWrite)) {
+    // originale: if (!(self.master.permissions.canWrite || task.canWrite)) {
   if (!(self.master.permissions.canWrite && task.canWrite)) {
       // originale: .prop("readOnly", true);
     taskEditor.find("input,textarea").prop("disabled", true);

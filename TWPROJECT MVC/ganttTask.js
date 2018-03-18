@@ -26,13 +26,24 @@
  * raw data.
  */
 
-// le variabili "askConfermation" e "isLeaf" servono quando venono apportate modifiche a delle task che fanno parte di un "albero" (task che hanno legami tra loro)
-// askConfermation: quando la nuova data di fine della task radice(il primo nodo di un sottoalbero), supera quella di inizio del figlio, chiedo all'utente come comportarmi. Se il nodo radice ha più figli, chiedo solo una volta cosa fare, e tengo quell'opzione per tutti i nodi
+/*
+ * Questa libreria si occupa della creazione e gestione dell'oggetto task.
+ * Qui sono definite le funzione che vengono utilizzare per decidere come comportarsi quando l'utente effettua delle modifiche sulle task 
+ * es. - modifica del periodo di una task (setPeriod) -> come comportarsi per gestire i nodi che dipendono da lei
+ *     - quando si sposta una task (moveTo) 
+ * 
+ */
+
+
+
+// OSS: Variabili definite da me
+// le variabili "askConfermation" e "isLeaf" servono quando venono apportate modifiche a delle task che fanno parte di un "albero" (quando ho task che hanno legami tra loro)
+// askConfermation: quando la nuova data di fine della task radice(il primo nodo di un sottoalbero), supera quella di inizio del figlio, chiedo all'utente come comportarmi. 
+//      - Se il nodo radice ha più figli, chiedo solo una volta cosa fare, e tengo quell'opzione per tutti i nodi
 var askConfermation = true;
-// quando modifico la lunghezza di un nodo foglia, non mi serve chiedere all'utente cosa fare, perché l'albero sopra il nodo, non viene influenzato. Quindi lascio fare l'operazione.
+// isLeaf: quando modifico la lunghezza di un nodo foglia, non mi serve chiedere all'utente cosa fare, perché l'albero sopra il nodo, non viene influenzato. Quindi lascio fare l'operazione.
 var isLeaf = false;
 
-// oggetto in cui salvo lo stato delle task, quando l'utente effettua delle
 //var debugObject;
 function TaskFactory() {
 
@@ -51,6 +62,7 @@ function TaskFactory() {
 }
 
 // funzione originale: Task(.....,collapse) { ... }
+// ho aggiunto anche i campi: canWrite, canAdd, canDelete, canAddIssue, in modo che, quando si crea una task, vengano utilizziti quelli ricevuti dal server, attraverso l'oggetto json, e non quelli di default
 function Task(id, name, code, level, start, end, duration, collapsed, canWrite, canAdd, canDelete, canAddIssue) {
   this.id = id;
   this.name = name;
@@ -75,7 +87,7 @@ function Task(id, name, code, level, start, end, duration, collapsed, canWrite, 
   this.collapsed = collapsed;
 
   //permissions
-  // by default all true, but must be inherited from parent
+  // associo alla task i permessi dell'utente, ricevuti dal server
   this.canWrite = canWrite;
   this.canAdd = canAdd;
   this.canDelete = canDelete;
@@ -119,15 +131,17 @@ Task.prototype.createAssignment = function (id, resourceId, roleId, effort) {
 
 
 //<%---------- SET PERIOD ---------------------- --%>
+// questa funzione viene chiamata quando vengono modificate le date di una task
 Task.prototype.setPeriod = function (start, end) {
   //console.debug("setPeriod ",this.code,this.name,new Date(start), new Date(end));
     //var profilerSetPer = new Profiler("gt_setPeriodJS");
 
-    // ripristino il valore di default, in modo da poter chiedere all'utente come comportarmi quando sta modificando la lunghezza di un nodo, e questo va a sovrapporsi ad un altro
+    // ripristino il valore di default.
+    // Questo mi servirà in modo da poter chiedere all'utente come comportarmi quando modificherà la lunghezza di un nodo, e questo andrà a sovrapporsi ad un figlio
     // prima di propagare dei comandi a eventuali nodi, memorizzo se il nodo attuale ne ha o meno(quindi è foglia).
     // con il seguente controllo, aviterei il problema del popup(prompt) che chiede più volte cosa fare, se la task figlia è "sopra"(come riga nella tabella).
     // OSS: lasciandolo così, nel caso in cui modifico l'inizio o la fine di una task, mi viene chiesto se voglio confermarlo. (avviene nelle subtask e in quelle radice)
-    if (isLeaf) // && askConfermation)
+    if (isLeaf)
         askConfermation = true;
     else
         askConfermation = false;
@@ -180,7 +194,7 @@ Task.prototype.setPeriod = function (start, end) {
   }
 
     // originale: var startBySuperiors = this.computeStartBySuperiors(start, originalPeriod);
-    // controllo se la task è stata modificata, modificandone la data di inizio o di fine
+    // controllo se la task è stata modificata, cambiandone la data di inizio o di fine
   var startBySuperiors;
   if (/*start < originalPeriod.start */ end == originalPeriod.end)
   {
@@ -288,6 +302,8 @@ Task.prototype.setPeriod = function (start, end) {
 
 
 //<%---------- MOVE TO ---------------------- --%>
+// originale: function (start, ignoreMilestones, propagateToInferiors)
+// taskPadre: mi serve per ripristinare la task, nel caso l'utente decidesse di annulare l'operazione di modifica
 Task.prototype.moveTo = function (start, ignoreMilestones, propagateToInferiors, taskPadre) {
   //console.debug("moveTo ",this.name,new Date(start),this.duration,ignoreMilestones);
   //var profiler = new Profiler("gt_task_moveTo");
@@ -297,7 +313,7 @@ Task.prototype.moveTo = function (start, ignoreMilestones, propagateToInferiors,
     start = start.getTime();
   }
 
-    // aggiunto per estrarre i dati origniali della task
+    // aggiunto per memorizzare i dati origniali della task
   var originalPeriod;
   if (taskPadre != null) {
       originalPeriod = {
@@ -344,7 +360,7 @@ Task.prototype.moveTo = function (start, ignoreMilestones, propagateToInferiors,
       return false;
     }
 
-
+    // OSS: 18/03/2018 non sono presenti giorni "holiday"
     // bicch 22/4/2016: quando si sposta un task con child a cavallo di holidays, i figli devono essere shiftati in workingDays, non in millisecondi, altrimenti si cambiano le durate
     // when moving children you MUST consider WORKING days,
     var panDeltaInWM = getDistanceInUnits(new Date(originalPeriod.start),new Date(this.start));
@@ -354,7 +370,6 @@ Task.prototype.moveTo = function (start, ignoreMilestones, propagateToInferiors,
     for (var i = 0; i < children.length; i++) {
       var ch = children[i];
       var chStart = incrementDateByUnits(new Date(ch.start), panDeltaInWM);
-      //askConfermation = false;
       ch.moveTo(chStart,false,false, originalPeriod);
       }
 
@@ -402,6 +417,7 @@ Task.prototype.checkMilestonesConstraints = function (newStart,newEnd,ignoreMile
 };
 
 //<%---------- PROPAGATE TO INFERIORS ---------------------- --%>
+// quando vengono modificate le date o il periodo di una task, e questa è radice di un sottoalbero, propago tali modifiche a nodi che dipendono da lei, cosi da aggiornarli
 Task.prototype.propagateToInferiors = function (end, origanalPeriod) {
   //console.debug("propagateToInferiors "+this.name)
   //and now propagate to inferiors
@@ -432,8 +448,8 @@ Task.prototype.propagateToInferiors = function (end, origanalPeriod) {
 
 //<%---------- COMPUTE START BY SUPERIORS ---------------------- --%>
 // originale: computeStartBySuperiors = function (proposedStart) {
-// la var originalPeriod viene utilizzata in modo da poter ripristinare lo stato(posizione) della task,
-// quando la data di fine del padre supera quella di inizio di un figlio, e l'utente decida di non proseguire.
+// la variabile: originalPeriod viene utilizzata in modo da poter ripristinare lo stato(posizione) della task,
+// quando la data di fine del padre supera quella di inizio di un figlio, e l'utente decida di annullare l'operazione.
 Task.prototype.computeStartBySuperiors = function (proposedStart, originalPeriod) {
 
   //if depends -> start is set to max end + lag of superior
@@ -442,19 +458,18 @@ Task.prototype.computeStartBySuperiors = function (proposedStart, originalPeriod
   if (sups && sups.length > 0) {
     supEnd=0;
     for (var i = 0; i < sups.length; i++) {
-        // controllo che il "lag"(giorni) tra la data di fine della task padre, e quella di inizio del figlio, sia ancora corretta. Altrimenti l'aggiorno
-        //  versione 1: prende i dati e li visualizza nel grafico, senza nessun controllo
+        // controllo che il "lag"(giorni) tra la data di fine della task padre, e quella di inizio del figlio, sia ancora corretta. Altrimenti lo aggiorno(ricalcolandolo)
+        //  versione 1: ricalcola il lag, prende i dati e li visualizza nel grafico, senza nessun controllo
         /*    sups[i].lag = checkLagValue(sups[i]);
             var link = sups[i];
             supEnd = Math.max(supEnd, incrementDateByUnits(new Date(link.from.end), link.lag));
         */
 
         //versione 2: legge i dati ricevuti e prima di visualizzare nel grafico, fa dei controlli sulle dati di inizo e fine delle task
-
         var retLag = checkLagValue(sups[i]);
 
-        // retLag[0] != false: vuol dire che la nuova data di fine del padre, è minore della data di inizio del figlio
-        // isLeaf: vuol dire che la modifica della task padre, non influisce(task padre e figlio non hanno giorni in comune)
+        // retLag[0] != false: vuol dire che la nuova data di fine del padre, è minore della data di inizio del figlio. Quindi i figlio non subiscono modifiche
+        // isLeaf: vuol dire che sto modificando una task che non ha nessun nodo che dipende da lei. Posso modificarne le date senza problemi di sovrapposizione
         if (retLag[0] != false || isLeaf) {
             
             sups[i].lag = retLag[0];
@@ -463,21 +478,22 @@ Task.prototype.computeStartBySuperiors = function (proposedStart, originalPeriod
 
             supEnd = Math.max(supEnd, incrementDateByUnits(new Date(link.from.end), link.lag));
             
-            //debugObject.push({ "padre": sups[i], "figlio": this, "askConfermation": askConfermation, "rispPrompt": rispPrompt, "codice": "if (retLag[0] != false || isLeaf)"});
         }
         else {
             
-            var rispPrompt;
             // vuol dire che la data di fine della task padre, è maggiore della data di inizio della task figlio.
             // cosa faccio? 
-            // 1. se le task figlie sono più di 1, e la data di inizio del padre è maggiore di quella di un figlio, prima di chiedere se continuare, controllo se mi è già stato detto cosa fare.
 
+            var rispPrompt; // serve per memorizzare la scelta dell'utente alla domanda "confirm('.......')"
+
+            // 1. se le task figlie sono più di 1, e la data di inizio del padre è maggiore di quella di un figlio, prima di chiedere se continuare, controllo se mi è già stato detto cosa fare.
+            //    Altrimenti chiedo all'utente
             if (askConfermation) {
                 rispPrompt = confirm("La data di fine della task che stai modificando, è maggiore della data di inizio della task figlia. Vuoi continuare?");
                 askConfermation = false;
             }
-            if (rispPrompt == false) { // l'utente decide di non proseguire con l'operazione. Ripristino lo stato precedente
-                // ripristino la data di fine dell'attivià padre, in modo da annullare l'operazione
+            if (rispPrompt == false) { // l'utente ha deciso di non proseguire con l'operazione. Ripristino lo stato precedente
+                // 2. ripristino le date dell'attivià padre, in modo da ripristinare l'operazione precedente.
                 var parent = this.getSuperiors()[i];
                 parent.from.end = originalPeriod.end;
                 parent.from.start = originalPeriod.start;
@@ -485,17 +501,15 @@ Task.prototype.computeStartBySuperiors = function (proposedStart, originalPeriod
 
                 supEnd = Math.max(supEnd, incrementDateByUnits(new Date(sups[i].from.end), sups[i].lag));
 
-            //    debugObject.push({ "padre": sups[i], "figlio": this, "askConfermation": askConfermation, "rispPrompt": rispPrompt, "codice": "if (rispPrompt == false)" });
             }
             else {
-                // procedo comunque con la modifica della relazione
+                // 2. procedo comunque con la modifica della relazione
                 sups[i].lag = 0; // imposto "lag"(num di giorni tra le task) = 0 in modo da non lasciare giorni vuoti tra la task padre e quella figlia
 
                 var link = sups[i];
 
                 supEnd = Math.max(supEnd, incrementDateByUnits(new Date(link.from.end), link.lag));
 
-             //   debugObject.push({ "padre": sups[i], "figlio": this, "askConfermation": askConfermation, "rispPrompt": rispPrompt, "codice": "if (rispPrompt == false)else{....}" });
             }
         }
         
@@ -506,7 +520,8 @@ Task.prototype.computeStartBySuperiors = function (proposedStart, originalPeriod
   return computeStart(supEnd);
 };
 
-// data un "superior", che contiente la task padre, quella figlio e il valore del lag(numero di giorni), controllo che il lag sia coerente con la differenza di giorni tra la data di fine del padre e la data di inizio del figlio
+// Funzione che calcola il numero di giorni tra due task, e ne restituisce lo stato
+// dato "superior", che contiente la task di partenza, quella di destinazione e il valore del lag(numero di giorni), controllo che il lag sia coerente con la differenza di giorni tra la data di fine del padre e la data di inizio del figlio
 function checkLagValue(superior)
 {
     var ret = [];
@@ -518,15 +533,13 @@ function checkLagValue(superior)
     if (millisec < 0)
     {
         // vuol dire che la data di fine della task padre, è maggiore della data di inizio della task figlio.
-        // cosa faccio ????
-    //    var r = confirm("La data di fine della task che stai modificando, è maggiore della data di inizio della task figlia. Vuoi continuare?");
-    //    if (r == false) {
+        // cosa faccio?
+        // ritorno "false" alla funzione chiamante "computeStartBySuperiors"
         ret.push(false);
         ret.push(calculatedLag);
         calcolaLag = false;
-    //    }
     }
-
+    // ritorno il valore del lag tra le date 
     if (calcolaLag) {
 
         if (calculatedLag == superior.lag) {
@@ -577,7 +590,7 @@ Task.prototype.computeStartBySuperiorsStartChanged = function (proposedStart, or
 };
 
 // originale: updateTree(task)
-// - originalPeriod: mi serve per sapere i valori iniziali della task, prima della modifica
+// originalPeriod: mi serve per sapere i valori iniziali della task, prima della modifica
 function updateTree(task, originalPeriod) {
 
   //console.debug("updateTree ",task.code,task.name, new Date(task.start), new Date(task.end));
@@ -834,7 +847,7 @@ Task.prototype.changeStatus = function (newStatus,forceStatusCheck) {
    */
   function propagateStatusToInferiors( infs, status) {
     for (var i = 0; i < infs.length; i++) {
-      propagateStatus(infs[i].to, status, false, false, false);
+        propagateStatus(infs[i].to, status, false, false, false);
     }
   }
 
@@ -888,7 +901,6 @@ Task.prototype.getRow = function () {
   return ret;
 };
 
-
 Task.prototype.getParents = function () {
   var ret;
   if (this.master) {
@@ -906,7 +918,6 @@ Task.prototype.getParents = function () {
   return ret;
 };
 
-
 Task.prototype.getParent = function () {
   var ret;
   if (this.master) {
@@ -921,7 +932,6 @@ Task.prototype.getParent = function () {
   return ret;
 };
 
-
 Task.prototype.isParent = function () {
   var ret = false;
   if (this.master) {
@@ -931,7 +941,6 @@ Task.prototype.isParent = function () {
   }
   return ret;
 };
-
 
 Task.prototype.getChildren = function () {
   var ret = [];
@@ -948,7 +957,6 @@ Task.prototype.getChildren = function () {
   return ret;
 };
 
-
 Task.prototype.getDescendant = function () {
   var ret = [];
   if (this.master) {
@@ -963,7 +971,6 @@ Task.prototype.getDescendant = function () {
   }
   return ret;
 };
-
 
 Task.prototype.getSuperiors = function () {
   var ret = [];

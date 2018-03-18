@@ -89,6 +89,7 @@ function GanttMaster() {
   var self = this;
 }
 
+// funzione di inializzazione componenti
 GanttMaster.prototype.init = function (workSpace) {
   var place=$("<div>").prop("id","TWGanttArea").css( {padding:0, "overflow-y":"auto", "overflow-x":"hidden","border":"1px solid #e5e5e5",position:"relative"});
   workSpace.append(place).addClass("TWGanttWorkSpace");
@@ -422,7 +423,7 @@ GanttMaster.prototype.addTask = function (task, row) {
     this.gantt.addTask(task);
   }
 
-//trigger addedTask event 
+  //trigger addedTask event 
   $(this.element).trigger("addedTask.gantt", task);
   return ret;
 };
@@ -508,7 +509,7 @@ GanttMaster.prototype.loadTasks = function (tasks, selectedRow) {
   for (var i = 0; i < tasks.length; i++) {
     var task = tasks[i];
     if (!(task instanceof Task)) {
-        // funzione originale: factory.build(task.id, task.name, task.code, task.level, task.start, task.duration, task.collapsed)
+        // originale: factory.build(task.id, task.name, task.code, task.level, task.start, task.duration, task.collapsed)
         // modificate in modo da poter passare alle task i permessi specificati dall'oggetto json. Altrimenti utilizzava dei valori di default letti all'interno della funzione
         var t = factory.build(task.id, task.name, task.code, task.level, task.start, task.duration, task.collapsed, this.permissions.canWrite, this.permissions.canAdd, this.permissions.canDelete, this.permissions.canAddIssue);
         for (var key in task) {
@@ -601,6 +602,8 @@ GanttMaster.prototype.changeTaskDates = function (task, start, end) {
 
 
 GanttMaster.prototype.moveTask = function (task, newStart) {
+    // originale: task.moveTo(newStart, true, true);
+    // passo alla moveTo anche i dati della task che in questione. In base alle azioni dell'utente, potrebbero servirmi (es. ripristinare le date originali di una task modificata)
     return task.moveTo(newStart, true, true, task);
 };
 
@@ -673,7 +676,6 @@ GanttMaster.prototype.reset = function () {
 };
 
 
-// OSS: qui non entra quando cerco di modificare una task
 GanttMaster.prototype.showTaskEditor = function (taskId) {
 
     var task = this.getTask(taskId);
@@ -921,7 +923,7 @@ GanttMaster.prototype.updateLinks = function (task) {
     for (var j = 0; j < deps.length; j++) {
       var depString = deps[j]; // in the form of row(lag) e.g. 2:3,3:4,5
       var supStr =depString;
-      var lag = 0;
+      var lag = 0; // valore che identifica il numero di giorni tra due task (nelle relazioni fine-inizio, indica quanti giorni ci sono tra la fine della prima task, e l'inizio della seconda)
       var pos = depString.indexOf(":");
       if (pos>0){
         supStr=depString.substr(0,pos);
@@ -949,12 +951,12 @@ GanttMaster.prototype.updateLinks = function (task) {
           todoOk = false;
 
         } else {
-            // calcolo il numero di giorni tra le due task che l'utente sta cercando di unire, in modo da mantenere la distanza.
-            // OSS: "task" è il figlio e "sup" il padre
-            var millisec = task.start - sup.end;
-            lag = Math.floor(millisec / (24 * 60 * 60 * 1000));
+            // calcolo il numero di giorni tra le due task che l'utente sta cercando di unire, in modo da mantenerne la distanza.
+            // OSS: "task" è la foglia e "sup" la radice
+            var millisec = task.start - sup.end; // calcolo i millisecondi tra le due date
+            lag = Math.floor(millisec / (24 * 60 * 60 * 1000)); // converto i millisec in giorni (approssimandoli)
 
-            this.links.push(new Link(sup, task, lag));
+            this.links.push(new Link(sup, task, lag)); // creo il link tra le due task, mantenendendole fisse nelle loro posizioni originali
             newDepsString = newDepsString + (newDepsString.length > 0 ? "," : "") + supStr; +(lag==0?"":":"+durationToString(lag));
         }
 
@@ -971,15 +973,6 @@ GanttMaster.prototype.updateLinks = function (task) {
 
   return todoOk;
 };
-
-
-// funzione che calcola il numero di giorni tra la data(in millisec) del padre, e la data di inizio del figlio
-/*GanttMaster.prototype.getLagBetweenTimes = function (sup, task) {
-    var millisec = sup.end - task.start;
-    var gg = millisec.asDays();
-    return gg;
-};*/
-
 
 GanttMaster.prototype.moveUpCurrentTask = function () {
   var self = this;

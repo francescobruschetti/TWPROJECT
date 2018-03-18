@@ -125,9 +125,9 @@
             "canWriteOnParent": @Html.Raw(Json.Encode(Model.canWriteOnParent)),
         }
 
-        // il ciclo seguente, prende le task dell'oggetto ret e calcola un offset.
+        // il ciclo seguente, prende le task dell'oggetto 'ret' e calcola un offset.
         // applica l'offset alle date delle task, in modo da spostarle dalla loro data origininale, alla data odierna (mantenendo il loro ordinamento)
-        var offset = 0; //codice per calcolare l'offset tra la data di oggi e quella della prima task: new Date().getTime() - ret.tasks[0].start;
+        var offset = 0; // codice per calcolare l'offset tra la data di oggi e quella della prima task: new Date().getTime() - ret.tasks[0].start;
         for (var i = 0; i < ret.tasks.length; i++) {
             ret.tasks[i].start = ret.tasks[i].start + offset;
         }
@@ -231,7 +231,7 @@
         ge.reset();
     }
 
-    // ????-------------------------------------------  Get project file as JSON (used for migrate project from gantt to Teamwork) ------------------------------------------------------
+    // -------------------------------------------  Get project file as JSON (used for migrate project from gantt to Teamwork) ------------------------------------------------------
     function getFile() {
         $("#gimBaPrj").val(JSON.stringify(ge.saveProject()));
         $("#gimmeBack").submit();
@@ -319,7 +319,7 @@
                 }
             }
 
-            // leggo le nuove(sono state aggiunte da quando ho aperto il popup) risorse e le memorizzo // originale: loop on new rows
+            // leggo le nuove risorse(sono state aggiunte da quando ho aperto il popup) e le memorizzo // originale: loop on new rows
             var cnt = 0
             resourceEditor.find("[resId=new]").each(function () {
                 cnt++;
@@ -339,7 +339,7 @@
         var ndo = createModalPopup(400, 100).append(resourceEditor);
     }
 
-    // ??? OSS: commenti creati in automantico.
+    // OSS: commenti creati in automantico.
     function initializeHistoryManagement() {
 
         //si chiede al server se c'è della hisory per la root
@@ -378,7 +378,7 @@
                                     var minVal = 0;
                                     var maxVal = dh.length - 1;
 
-                                    $("#slider").show().mbSlider({
+                                    $("#slider").show().mbSlider({ 
                                         rangeColor: '#2f97c6',
                                         minVal: minVal,
                                         maxVal: maxVal,
@@ -421,8 +421,6 @@
                             }
                         });
 
-
-                        // quando si spenge
                     } else {
                         //si cancella lo slider
                         $("#slider").remove();
@@ -735,7 +733,7 @@
 
 
     <script type="text/javascript">
-        // utilizzo i template definiti precedentemente nella pagina, e ..... 
+        // utilizzo i template definiti precedentemente nella pagina
         $.JST.loadDecorator("RESOURCE_ROW", function (resTr, res) {
             resTr.find(".delRes").click(function () { $(this).closest("tr").remove() });
         });
@@ -770,7 +768,7 @@
 
         });
 
-
+        // carico i messaggi, leggendoli dal file "App_GlobalResources/GanttLanguage.resx"
         function loadI18n() {
             GanttMaster.messages = {
                 "CANNOT_WRITE": "@Resources.GanttLanguage.CANNOT_WRITE",

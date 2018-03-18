@@ -29,7 +29,7 @@ Date.preferAmericanFormat = false;
 // Set to 0=SUn for American 1=Mon for european
 Date.firstDayOfWeek = 1;
 
-//default 
+//default
 Date.defaultFormat="dd/MM/yyyy";
 
 // If the getFullYear() method is not defined, create it
